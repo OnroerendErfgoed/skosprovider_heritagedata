@@ -30,14 +30,16 @@ class HeritagedataProvider(VocabularyProvider):
         """
         if not 'default_language' in metadata:
             metadata['default_language'] = 'en'
+        if metadata['default_language'] != 'en':
+            raise ValueError("Only english('en') is supported as language for this skosprovider")
         if 'base_url' in kwargs:
             self.base_url = kwargs['base_url']
         else:
-            self.base_url = 'http://purl.org/heritagedata/'# http://heritagedata.org/live/schemes/560/concepts/445424845454.json
+            self.base_url = 'http://purl.org/heritagedata/'
         if 'vocab_id' in kwargs:
             self.vocab_id = kwargs['vocab_id']
         else:
-            self.vocab_id = 'eh_period'
+            raise ValueError("Please provide a vocab_id: for example vocab_id='eh_period' ")
         if not 'url' in kwargs:
             self.url = self.base_url + "schemes/" + self.vocab_id
         else:
@@ -142,6 +144,7 @@ class HeritagedataProvider(VocabularyProvider):
                 determined by looking at the `**kwargs` parameter, the default \
                 language of the provider and finally falls back to `en`.
         '''
+
         # #  interprete and validate query parameters (label, type and collection)
         # Label
         label = None
@@ -151,25 +154,15 @@ class HeritagedataProvider(VocabularyProvider):
         type_c = 'all'
         if 'type' in query:
             type_c = query['type']
-        if type_c not in ('all', 'concept', 'collection'):
-            raise ValueError("type: only the following values are allowed: 'all', 'concept', 'collection'")
-        #Collection to search in (optional)
-        coll_id = None
-        coll_depth = None
+        if type_c == 'collection':
+            raise ValueError("type: 'collection' is not used in Heritagedata so cannot be used as type")
+        if type_c not in ('all', 'concept'):
+            raise ValueError("type: only the following values are allowed: 'all', 'concept'")
+        #collection
         if 'collection' in query:
-            coll = query['collection']
-            if not 'id' in coll:
-                raise ValueError("collection: 'id' is required key if a collection-dictionary is given")
-            coll_id = coll['id']
-            coll_depth = 'members'
-            if 'depth' in coll:
-                coll_depth = coll['depth']
-            if coll_depth not in ('members', 'all'):
-                raise ValueError(
-                    "collection - 'depth': only the following values are allowed: 'members', 'all'")
-
-        return False
-
+            raise ValueError("collection: 'collection' is not used in Heritagedata")
+        params = {'schemeURI': self.url, 'contains': label}
+        return self._get_items("getConceptLabelMatch", params)
 
     def get_all(self):
         """
@@ -181,7 +174,64 @@ class HeritagedataProvider(VocabularyProvider):
         )
         return False
 
-    def _get_answer(self, service, params):
+    def get_top_concepts(self):
+        """  Returns all concepts that form the top-level of a display hierarchy.
+
+        :return: A :class:`lst` of concepts.
+        """
+        #Collections are not used in Heritagedata so get_top_concepts() equals get_top_display()
+        return self.get_top_display()
+
+    def get_top_display(self):
+        """  Returns all concepts or collections that form the top-level of a display hierarchy.
+        :return: A :class:`lst` of concepts and collections.
+        """
+        params = {'schemeURI': self.url}
+        return self._get_items("getTopConceptsForScheme", params)
+
+    def get_children_display(self, id):
+        """ Return a list of concepts or collections that should be displayed under this concept or collection.
+
+        :param str id: A concept or collection id.
+        :returns: A :class:`lst` of concepts and collections.
+        """
+        params = {'conceptURI': self.url + "/concepts/" + id}
+        return self._get_items("getConceptRelations", params)
+
+    def expand(self, id):
+        """ Expand a concept or collection to all it's narrower concepts.
+            If the id passed belongs to a :class:`skosprovider.skos.Concept`,
+            the id of the concept itself should be include in the return value.
+
+        :param str id: A concept or collection id.
+        :returns: A :class:`lst` of id's. Returns false if the input id does not exists
+        """
+        expanded = []
+        expanded.append(id)
+        expanded.extend(self._get_children(id, all=True))
+        if len(expanded) == 1:
+            if self.get_by_id(id) is None:
+                return False
+        return expanded
+
+    def _get_children(self, id, all=False):
+        #If all=True this method works recursive
+        request = self.service_url + "/getConceptRelations"
+        res = requests.get(request, params={'conceptURI': self.url + "/concepts/" + id})
+        res.encoding = 'utf-8'
+        result = res.json()
+        answer = []
+        for r in result:
+            if r['property'] == str(SKOS.narrower):
+                child_id = uri_to_id(r["uri"])
+                answer.append(child_id)
+                if all is True:
+                    child_list = self._get_children(child_id, all=True)
+                    if child_list is not False:
+                        answer.extend(child_list)
+        return answer
+
+    def _get_items(self, service, params):
         # send request to Heritagedata
         """ Returns the results of the Sparql query to a :class:`lst` of concepts and collections.
             The return :class:`lst`  can be empty.
@@ -213,48 +263,4 @@ class HeritagedataProvider(VocabularyProvider):
             return answer
         except:
             return False
-
-    def get_top_concepts(self):
-        """  Returns all concepts that form the top-level of a display hierarchy.
-
-        :return: A :class:`lst` of concepts.
-        """
-        #Collections are not used in Heritagedata so get_top_concepts() equals get_top_display()
-        return self.get_top_display()
-
-    def get_top_display(self):
-        """  Returns all concepts or collections that form the top-level of a display hierarchy.
-        :return: A :class:`lst` of concepts and collections.
-        """
-        params = {'schemeURI': self.url}
-        return self._get_answer("getTopConceptsForScheme", params)
-
-    def get_children_display(self, id):
-        """ Return a list of concepts or collections that should be displayed under this concept or collection.
-
-        :param str id: A concept or collection id.
-        :returns: A :class:`lst` of concepts and collections.
-        """
-        params = {'conceptURI': self.url + "/concepts/" + id}
-        return self._get_answer("getConceptRelations", params)
-
-    def expand(self, id):
-        """ Expand a concept or collection to all it's narrower concepts.
-            If the id passed belongs to a :class:`skosprovider.skos.Concept`,
-            the id of the concept itself should be include in the return value.
-
-        :param str id: A concept or collection id.
-        :returns: A :class:`lst` of id's. Returns false if the input id does not exists
-        """
-
-        return False
-
-class EHPeriodProvider(HeritagedataProvider):
-    """
-    """
-
-    def __init__(self, metadata):
-        """
-        """
-        HeritagedataProvider.__init__(self, metadata, base_url='http://heritagedata.org/live/schemes/', vocab_id='eh_period')
 

@@ -1,12 +1,12 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 '''
-This script demonstrates using the AATProvider to expand a collection
+This script demonstrates using the HeritagedataProvider to expand a concept
 '''
 
-from skosprovider_heritagedata.providers import AATProvider
+from skosprovider_heritagedata.providers import HeritagedataProvider
 
-results = AATProvider({'id': 'AAT', 'default_language': 'nl'}).expand('300007466')
+results = HeritagedataProvider({'id': 'Heritagedata'}, vocab_id='eh_period').expand('PM')
 
 print('Results')
 print('------')

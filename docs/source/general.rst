@@ -5,42 +5,32 @@ Introduction
 
 This library offers an implementation of the 
 :class:`skosprovider.providers.VocabularyProvider` interface based on the 
-`Getty Vocabularies <http://vocab.getty.edu>`_. It reduces the complex 
-vocabularies like :term:`AAT` and :term:`TGN` to a basic :term:`SKOS` version
+`Heritagedata Vocabularies <http://www.heritagedata.org>`_. It reduces the complexity of the
+vocabularies to a basic :term:`SKOS` version
 of them. 
 
-Supported Getty thesauri:
+Supported Heritagedata thesauri:
 
-* The Art & Architecture Thesaurus (AAT) by use of the 
-  :class:`skosprovider_getty.providers.AATProvider`.
-* The Getty Thesaurus of Geographic Names (TGN) by use of the 
-  :class:`skosprovider_getty.providers.TGNProvider`.
+`Heritagedata Vocabulary schemes <http://heritagedata.org/live/getAllSchemes.php>`_
+
 
 Using the providers
 ===================
 
-Using AATProvider
------------------
+Using HeritagedataProvider
+--------------------------
 
-The :class:`~skosprovider_getty.providers.AATProvider` is a provider for 
-the :term:`AAT`. It's use is identical to all other SKOSProviders.
+The :class:`~skosprovider_heritagedata.providers.HeritagedataProvider` is a general provider for
+the Heritagedata vocabularies. It's use is identical to all other SKOSProviders. A vocab_id is required to indicate the vocabulary to be used.
 
-.. literalinclude:: ../../examples/churches.py
+.. literalinclude:: ../../examples/period.py
    :language: python
 
-Using TGNProvider
------------------
 
-The :class:`~skosprovider_getty.providers.TGNProvider` is a provider for 
-the :term:`TGN`. It's use is identical to all other SKOSProviders.
+Finding concepts
+----------------
 
-.. literalinclude:: ../../examples/flanders.py
-   :language: python
-
-Finding concepts or collections
--------------------------------
-
-See the :meth:`skosprovider_getty.providers.GettyProvider.find` method for
+See the :meth:`skosprovider_heritagedata.providers.HeritagedataProvider.find` method for
 a detailed description of how this works.
 
 .. literalinclude:: ../../examples/find.py
@@ -52,7 +42,7 @@ Using expand()
 The expand methods return the id's of all the concepts that are narrower 
 concepts of a certain concept or collection.
 
-See the :meth:`skosprovider_getty.providers.GettyProvider.expand` method for
+See the :meth:`skosprovider_heritagedata.providers.HeritagedataProvider.expand` method for
 a detailed description of how this works.
 
 .. literalinclude:: ../../examples/expand.py

@@ -7,6 +7,6 @@ API Documentation
 Providers module
 ----------------
 
-.. automodule:: skosprovider_getty.providers
+.. automodule:: skosprovider_heritagedata.providers
    :members:
    

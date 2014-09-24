@@ -22,21 +22,3 @@ Glossary
 
    URN
     A URN is a specific form of a :term:`URI`.
-
-   Getty
-    The J. Paul Getty Trust is a cultural and philanthropic institution dedicated
-    to critical thinking in the presentation, conservation, and interpretation of the world's artistic legacy.
-    Through the collective and individual work of its constituent Programs—Getty Conservation Institute,
-    Getty Foundation, J. Paul Getty Museum, and Getty Research Institute—it pursues its mission in Los Angeles and throughout the world,
-    serving both the general interested public and a wide range of professional communities with the conviction
-    that a greater and more profound sensitivity to and knowledge of the visual arts
-    and their many histories are crucial to the promotion of a vital and civil society.
-    More information: http://www.getty.edu
-
-   AAT
-    `The Art & Architecture Thesaurus <http://vocab.getty.edu/aat>`__. 
-    A vocabulary provided by the :term:`Getty`.
-
-   TGN
-    `The Getty Thesaurus of Geographic Names <http://vocab.getty.edu/tgn>`__. 
-    A vocabulary provided by the :term:`Getty`.

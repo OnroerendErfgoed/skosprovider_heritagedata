@@ -1,12 +1,12 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 '''
-This script demonstrates using the AATProvider to find the concepts that are a member of a collection with 'church' in their label
+This script demonstrates using the HeritagedataProvider to find the concepts with 'iron' in their label
 '''
 
-from skosprovider_heritagedata.providers import AATProvider
+from skosprovider_heritagedata.providers import HeritagedataProvider
 
-results = AATProvider({'id': 'AAT', 'default_language': 'nl'}).find({'label': 'church', 'type': 'concept', 'collection': {'id': '300007466', 'depth': 'all'}})
+results = HeritagedataProvider({'id': 'Heritagedata'}, vocab_id='eh_period').find({'label': 'iron', 'type': 'concept'})
 
 print('Results')
 print('------')

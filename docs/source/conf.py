@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# skosprovider_getty documentation build configuration file, created by
+# skosprovider_heritagedata documentation build configuration file, created by
 # sphinx-quickstart on Fri Sep 19 10:30:09 2014.
 #
 # This file is execfile()d with the current directory set to its
@@ -49,7 +49,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'skosprovider_getty'
+project = u'skosprovider_heritagedata'
 copyright = u'2014, Flanders Heritage Agency'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -182,7 +182,7 @@ html_static_path = ['_static']
 #html_file_suffix = None
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'skosprovider_gettydoc'
+htmlhelp_basename = 'skosprovider_heritagedatadoc'
 
 
 # -- Options for LaTeX output ---------------------------------------------
@@ -202,7 +202,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-  ('index', 'skosprovider_getty.tex', u'skosprovider\\_getty Documentation',
+  ('index', 'skosprovider_heritagedata.tex', u'skosprovider\\_heritagedata Documentation',
    u'Flanders Heritage Agency', 'manual'),
 ]
 
@@ -232,7 +232,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'skosprovider_getty', u'skosprovider_getty Documentation',
+    ('index', 'skosprovider_heritagedata', u'skosprovider_heritagedata Documentation',
      [u'Flanders Heritage Agency'], 1)
 ]
 
@@ -246,8 +246,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', 'skosprovider_getty', u'skosprovider_getty Documentation',
-   u'Flanders Heritage Agency', 'skosprovider_getty', 'One line description of project.',
+  ('index', 'skosprovider_heritagedata', u'skosprovider_heritagedata Documentation',
+   u'Flanders Heritage Agency', 'skosprovider_heritagedata', 'One line description of project.',
    'Miscellaneous'),
 ]
 
