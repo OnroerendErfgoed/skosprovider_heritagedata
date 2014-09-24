@@ -75,6 +75,13 @@ class HeritagedataProviderTests(unittest.TestCase):
         self.assertGreater(len(all_childeren_pm), 0)
         self.assertIn('PM', all_childeren_pm)
 
+        # all_childeren_monumentsbyform = HeritagedataProvider({'id': 'Heritagedata'}, vocab_id='eh_tmt2').expand('102872')
+        # self.assertIsInstance(all_childeren_monumentsbyform, list)
+        # self.assertGreater(len(all_childeren_monumentsbyform), 0)
+        # self.assertIn('102872', all_childeren_monumentsbyform)
+
+
+
     def test_expand_invalid(self):
         all_childeren_invalid = HeritagedataProvider({'id': 'Heritagedata'}, vocab_id='eh_period').expand('invalid')
         self.assertFalse(all_childeren_invalid)
