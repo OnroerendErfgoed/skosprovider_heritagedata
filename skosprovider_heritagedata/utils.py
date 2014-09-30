@@ -18,9 +18,8 @@ PROV = rdflib.Namespace('http://www.w3.org/ns/prov#')
 
 class heritagedata_to_skos():
 
-    def __init__(self, graph, change_notes=False):
+    def __init__(self, graph):
         self.graph = graph
-        self.change_notes = change_notes
 
     def from_graph(self):
         clist = []
@@ -77,26 +76,23 @@ class heritagedata_to_skos():
         return Label(literal.toPython(), type, language)
 
     def _create_note(self, uri, type):
-        if not self.change_notes and '/rev/' in uri:
-            return None
-        else:
-            note = u''
-            language = 'en'
+        note = u''
+        language = 'en'
 
-            # http://vocab.getty.edu/aat/scopeNote
-            for s, p, o in self.graph.triples((uri, RDF.value, None)):
-                note += o.toPython()
-                language = o.language
+        # http://vocab.getty.edu/aat/scopeNote
+        for s, p, o in self.graph.triples((uri, RDF.value, None)):
+            note += o.toPython()
+            language = o.language
 
-            # for http://vocab.getty.edu/aat/rev/
-            for s, p, o in self.graph.triples((uri, DC.type, None)):
-                note += o.toPython()
-            for s, p, o in self.graph.triples((uri, DC.description, None)):
-                note += ': %s' % o.toPython()
-            for s, p, o in self.graph.triples((uri, PROV.startedAtTime, None)):
-                note += ' at %s ' % o.toPython()
+        # for http://vocab.getty.edu/aat/rev/
+        for s, p, o in self.graph.triples((uri, DC.type, None)):
+            note += o.toPython()
+        for s, p, o in self.graph.triples((uri, DC.description, None)):
+            note += ': %s' % o.toPython()
+        for s, p, o in self.graph.triples((uri, PROV.startedAtTime, None)):
+            note += ' at %s ' % o.toPython()
 
-            return Note(note, type, language)
+        return Note(note, type, language)
 
 def hierarchy_notetypes(list):
     # A getty scopeNote wil be of type skos.note and skos.scopeNote

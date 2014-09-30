@@ -50,7 +50,7 @@ class HeritagedataProvider(VocabularyProvider):
     def _get_language(self, **kwargs):
         return self.metadata['default_language']
 
-    def get_by_id(self, id, change_notes=False):
+    def get_by_id(self, id):
         """ Get a :class:`skosprovider.skos.Concept` or :class:`skosprovider.skos.Collection` by id
 
         :param (str) id: integer id of the :class:`skosprovider.skos.Concept` or :class:`skosprovider.skos.Concept`
@@ -76,7 +76,7 @@ class HeritagedataProvider(VocabularyProvider):
             else:
                 raise
 
-    def get_by_uri(self, uri, change_notes=False):
+    def get_by_uri(self, uri):
         """ Get a :class:`skosprovider.skos.Concept` or :class:`skosprovider.skos.Collection` by uri
 
         :param (str) uri: string uri of the :class:`skosprovider.skos.Concept` or :class:`skosprovider.skos.Concept`
@@ -84,7 +84,7 @@ class HeritagedataProvider(VocabularyProvider):
             Returns None if non-existing id
         """
         id = uri_to_id(uri)
-        return self.get_by_id(id, change_notes)
+        return self.get_by_id(id)
 
 
     def find(self, query):
