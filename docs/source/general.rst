@@ -17,7 +17,7 @@ Supported Heritagedata thesauri
 
 The webservices provides by `heritagedata.org <http://www.heritagedata.org>`_ 
 provide access to multiple vocabularies or conceptschemes. You can select
-one of these vocabularies by passing a `vocab_id` to the constructor of
+one of these vocabularies by passing a `scheme_id` to the constructor of
 the :class:`~skosprovider_heritagedata.providers.HeritagedataProvider`.
 
 `Heritagedata Vocabulary schemes <http://heritagedata.org/live/getAllSchemes.php>`_
@@ -31,7 +31,7 @@ Using HeritagedataProvider
 
 The :class:`~skosprovider_heritagedata.providers.HeritagedataProvider` is a 
 general provider for the Heritagedata vocabularies. It's use is identical to 
-all other SKOSProviders. A vocab_id is required to indicate the vocabulary 
+all other SKOSProviders. A scheme_id is required to indicate the vocabulary
 to be used. Please consult :ref:`supported_thesauri` for a complete list.
 
 .. literalinclude:: ../../examples/period.py

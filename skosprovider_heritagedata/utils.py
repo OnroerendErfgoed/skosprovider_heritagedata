@@ -110,3 +110,6 @@ def hierarchy_notetypes(list):
 
 def uri_to_id(uri):
     return uri.strip('/').rsplit('/',1)[1]
+
+def uri_to_base_uri(uri):
+    return uri.strip('/').rsplit('/',1)[0]

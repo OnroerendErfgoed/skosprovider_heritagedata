@@ -8,7 +8,7 @@ import logging
 from skosprovider.providers import VocabularyProvider
 from skosprovider_heritagedata.utils import (
     uri_to_id,
-    heritagedata_to_skos)
+    heritagedata_to_skos, uri_to_base_uri)
 
 log = logging.getLogger(__name__)
 
@@ -23,8 +23,8 @@ class HeritagedataProvider(VocabularyProvider):
 
         :param (dict) metadata: metadata of the provider
         :param kwargs: arguments defining the provider.
-            * Typical arguments are  `base_url`, `vocab_id` and `url`.
-                The `url` is a composition of the `base_url` and `vocab_id`
+            * Typical argument is `scheme_uri`.
+                The `scheme_uri` is a composition of the `base_scheme_uri` and `scheme_id`
             * The :class:`skosprovider_Heritagedata.providers.AATProvider`
                 is the default :class:`skosprovider_Heritagedata.providers.HeritagedataProvider`
         """
@@ -32,19 +32,18 @@ class HeritagedataProvider(VocabularyProvider):
             metadata['default_language'] = 'en'
         if metadata['default_language'] != 'en':
             raise ValueError("Only english('en') is supported as language for this skosprovider")
-        if 'base_url' in kwargs:
-            self.base_url = kwargs['base_url']
+        if 'scheme_uri' in kwargs:
+            self.base_scheme_uri = uri_to_base_uri(kwargs['scheme_uri'])
+            self.scheme_id = uri_to_id(kwargs['scheme_uri'])
         else:
-            self.base_url = 'http://purl.org/heritagedata/'
-        if 'vocab_id' in kwargs:
-            self.vocab_id = kwargs['vocab_id']
+            self.base_scheme_uri = 'http://purl.org/heritagedata/schemes'
+            self.scheme_id = 'eh_period'
+        self.scheme_uri = self.base_scheme_uri + "/" + self.scheme_id
+
+        if 'service_scheme_uri' in kwargs:
+            self.service_scheme_uri = kwargs['service_scheme_uri'].strip('/')
         else:
-            raise ValueError("Please provide a vocab_id: for example vocab_id='eh_period' ")
-        if not 'url' in kwargs:
-            self.url = self.base_url + "schemes/" + self.vocab_id
-        else:
-            self.url = kwargs['url']
-        self.service_url = "http://heritagedata.org/live/services"
+            self.service_scheme_uri = "http://heritagedata.org/live/services"
 
         super(HeritagedataProvider, self).__init__(metadata, **kwargs)
 
@@ -60,7 +59,7 @@ class HeritagedataProvider(VocabularyProvider):
         """
         graph = rdflib.Graph()
         try:
-            graph.parse('%s/%s/%s.rdf' % (self.url, "concepts", id))
+            graph.parse('%s/%s/%s.rdf' % (self.scheme_uri, "concepts", id))
             # get the concept
             graph_to_skos = heritagedata_to_skos(graph).from_graph()
             if len(graph_to_skos) == 0:
@@ -161,7 +160,7 @@ class HeritagedataProvider(VocabularyProvider):
         #collection
         if 'collection' in query:
             raise ValueError("collection: 'collection' is not used in Heritagedata")
-        params = {'schemeURI': self.url, 'contains': label}
+        params = {'schemeURI': self.scheme_uri, 'contains': label}
         return self._get_items("getConceptLabelMatch", params)
 
     def get_all(self):
@@ -186,7 +185,7 @@ class HeritagedataProvider(VocabularyProvider):
         """  Returns all concepts or collections that form the top-level of a display hierarchy.
         :return: A :class:`lst` of concepts and collections.
         """
-        params = {'schemeURI': self.url}
+        params = {'schemeURI': self.scheme_uri}
         return self._get_items("getTopConceptsForScheme", params)
 
     def get_children_display(self, id):
@@ -195,7 +194,7 @@ class HeritagedataProvider(VocabularyProvider):
         :param str id: A concept or collection id.
         :returns: A :class:`lst` of concepts and collections.
         """
-        params = {'conceptURI': self.url + "/concepts/" + id}
+        params = {'conceptURI': self.scheme_uri + "/concepts/" + id}
         return self._get_items("getConceptRelations", params)
 
     def expand(self, id):
@@ -216,8 +215,8 @@ class HeritagedataProvider(VocabularyProvider):
 
     def _get_children(self, id, all=False):
         #If all=True this method works recursive
-        request = self.service_url + "/getConceptRelations"
-        res = requests.get(request, params={'conceptURI': self.url + "/concepts/" + id})
+        request = self.service_scheme_uri + "/getConceptRelations"
+        res = requests.get(request, params={'conceptURI': self.scheme_uri + "/concepts/" + id})
         res.encoding = 'utf-8'
         result = res.json()
         answer = []
@@ -246,7 +245,7 @@ class HeritagedataProvider(VocabularyProvider):
         """
 
         try:
-            request = self.service_url + "/" + service
+            request = self.service_scheme_uri + "/" + service
             res = requests.get(request, params=params)
             res.encoding = 'utf-8'
             result = res.json()
