@@ -30,7 +30,7 @@ class heritagedata_to_skos():
             con.narrower = self._create_from_subject_predicate(sub, SKOS.narrower)
             con.related = self._create_from_subject_predicate(sub, SKOS.related)
             con.labels = self._create_from_subject_typelist(sub, Label.valid_types)
-            con.notes = self._create_from_subject_typelist(sub, hierarchy_notetypes(Note.valid_types))
+            con.notes = self._create_from_subject_typelist(sub, Note.valid_types)
             clist.append(con)
 
         for sub, pred, obj in self.graph.triples((None, RDF.type, SKOS.Collection)):
@@ -38,7 +38,7 @@ class heritagedata_to_skos():
             col = Collection(uri_to_id(uri), uri=uri)
             col.members = self._create_from_subject_predicate(sub, SKOS.member)
             col.labels = self._create_from_subject_typelist(sub, Label.valid_types)
-            col.notes = self._create_from_subject_typelist(sub, hierarchy_notetypes(Note.valid_types))
+            col.notes = self._create_from_subject_typelist(sub, Note.valid_types)
             clist.append(col)
 
         return clist
@@ -93,16 +93,6 @@ class heritagedata_to_skos():
             note += ' at %s ' % o.toPython()
 
         return Note(note, type, language)
-
-def hierarchy_notetypes(list):
-    # A getty scopeNote wil be of type skos.note and skos.scopeNote
-    # To avoid doubles and to make sure the getty scopeNote will have type skos.scopeNote and not skos.note,
-    # the skos.note will be added at the end of the list
-    index_note = list.index('note')
-    if index_note != -1:
-        list.pop(index_note)
-        list.append('note')
-    return list
 
 def uri_to_id(uri):
     return uri.strip('/').rsplit('/',1)[1]
