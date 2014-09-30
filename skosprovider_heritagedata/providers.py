@@ -7,10 +7,10 @@ import warnings
 import logging
 from skosprovider.providers import VocabularyProvider
 from skosprovider_heritagedata.utils import (
-    uri_to_id,
-    heritagedata_to_skos, uri_to_base_uri)
+    heritagedata_to_skos, _split_uri)
 
 log = logging.getLogger(__name__)
+
 
 class HeritagedataProvider(VocabularyProvider):
     """A provider that can work with the Heritagedata services of
@@ -33,8 +33,8 @@ class HeritagedataProvider(VocabularyProvider):
         if metadata['default_language'] != 'en':
             raise ValueError("Only english('en') is supported as language for this skosprovider")
         if 'scheme_uri' in kwargs:
-            self.base_scheme_uri = uri_to_base_uri(kwargs['scheme_uri'])
-            self.scheme_id = uri_to_id(kwargs['scheme_uri'])
+            self.base_scheme_uri = _split_uri(kwargs['scheme_uri'], 0)
+            self.scheme_id = _split_uri(kwargs['scheme_uri'], 1)
         else:
             self.base_scheme_uri = 'http://purl.org/heritagedata/schemes'
             self.scheme_id = 'eh_period'
@@ -72,7 +72,7 @@ class HeritagedataProvider(VocabularyProvider):
         except Exception as err:
             if hasattr(err, 'code'):
                 if err.code == 404:
-                    return None
+                    return False
             else:
                 raise
 
@@ -83,7 +83,7 @@ class HeritagedataProvider(VocabularyProvider):
         :return: corresponding :class:`skosprovider.skos.Concept` or :class:`skosprovider.skos.Concept`.
             Returns None if non-existing id
         """
-        id = uri_to_id(uri)
+        id = _split_uri(uri, 1)
         return self.get_by_id(id)
 
 
@@ -222,7 +222,7 @@ class HeritagedataProvider(VocabularyProvider):
         answer = []
         for r in result:
             if r['property'] == str(SKOS.narrower):
-                child_id = uri_to_id(r["uri"])
+                child_id = _split_uri(r["uri"], 1)
                 answer.append(child_id)
                 if all is True:
                     child_list = self._get_children(child_id, all=True)
@@ -253,7 +253,7 @@ class HeritagedataProvider(VocabularyProvider):
             for r in result:
                 if 'property' not in r.keys() or r['property'] == str(SKOS.narrower):
                     item = {
-                    'id': uri_to_id(r["uri"]),
+                    'id': _split_uri(r["uri"], 1),
                     'uri': r["uri"],
                     'type': 'concept',
                     'label': r["label"]

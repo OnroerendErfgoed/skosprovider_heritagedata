@@ -33,7 +33,7 @@ class HeritagedataProviderTests(unittest.TestCase):
 
     def test_get_by_id_nonexistant_id(self):
         concept = HeritagedataProvider({'id': 'Heritagedata'}, scheme_uri='http://purl.org/heritagedata/schemes/eh_period').get_by_id('123')
-        self.assertIsNone(concept)
+        self.assertFalse(concept)
 
     def test_get_by_uri(self):
         concept = HeritagedataProvider({'id': 'Heritagedata'}, scheme_uri='http://purl.org/heritagedata/schemes/eh_period').get_by_uri('http://purl.org/heritagedata/schemes/eh_period/concepts/PM')

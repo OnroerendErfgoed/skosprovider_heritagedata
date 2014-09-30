@@ -25,7 +25,7 @@ class heritagedata_to_skos():
         clist = []
         for sub, pred, obj in self.graph.triples((None, RDF.type, SKOS.Concept)):
             uri = str(sub)
-            con = Concept(uri_to_id(uri), uri=uri)
+            con = Concept(_split_uri(uri, 1), uri=uri)
             con.broader = self._create_from_subject_predicate(sub, SKOS.broader)
             con.narrower = self._create_from_subject_predicate(sub, SKOS.narrower)
             con.related = self._create_from_subject_predicate(sub, SKOS.related)
@@ -35,7 +35,7 @@ class heritagedata_to_skos():
 
         for sub, pred, obj in self.graph.triples((None, RDF.type, SKOS.Collection)):
             uri = str(sub)
-            col = Collection(uri_to_id(uri), uri=uri)
+            col = Collection(_split_uri(uri, 1), uri=uri)
             col.members = self._create_from_subject_predicate(sub, SKOS.member)
             col.labels = self._create_from_subject_typelist(sub, Label.valid_types)
             col.notes = self._create_from_subject_typelist(sub, Note.valid_types)
@@ -64,7 +64,7 @@ class heritagedata_to_skos():
                 else:
                     o = None
             else:
-                o = uri_to_id(o)
+                o = _split_uri(o, 1)
             if o:
                 list.append(o)
         return list
@@ -94,8 +94,6 @@ class heritagedata_to_skos():
 
         return Note(note, type, language)
 
-def uri_to_id(uri):
-    return uri.strip('/').rsplit('/',1)[1]
+def _split_uri(uri, index):
+    return uri.strip('/').rsplit('/', 1)[index]
 
-def uri_to_base_uri(uri):
-    return uri.strip('/').rsplit('/',1)[0]
