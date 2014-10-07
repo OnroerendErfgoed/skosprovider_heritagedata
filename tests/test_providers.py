@@ -8,8 +8,25 @@ import unittest
 
 class HeritagedataProviderTests(unittest.TestCase):
 
-    def test_default_language_error(self):
-        self.assertRaises(ValueError, HeritagedataProvider, {'id': 'Heritagedata', 'default_language': 'nl'}, scheme_uri='http://purl.org/heritagedata/schemes/eh_period')
+    def test_default_language_scottish_gaelic(self):
+        provider_gd = HeritagedataProvider({'id': 'Heritagedata', 'default_language': 'gd'}, scheme_uri='http://purl.org/heritagedata/schemes/1')
+        concept = provider_gd.get_by_id('500614')
+        self.assertEqual(concept['uri'], 'http://purl.org/heritagedata/schemes/1/concepts/500614')
+
+        result = provider_gd.find({'label': 'LOCH', 'type': 'concept'})
+        for r in result:
+            self.assertIn("LOCH", r['label'])
+            self.assertTrue(r['lang'] in ('en', 'gd'))
+
+        provider_en = HeritagedataProvider({'id': 'Heritagedata'}, scheme_uri='http://purl.org/heritagedata/schemes/1')
+        concept = provider_en.get_by_id('500614')
+        self.assertEqual(concept['uri'], 'http://purl.org/heritagedata/schemes/1/concepts/500614')
+
+        result = provider_en.find({'label': 'LOCH', 'type': 'concept'})
+        for r in result:
+            self.assertIn("LOCH", r['label'])
+            self.assertTrue(r['lang'] in ('en', 'gd'))
+
 
     def test_get_by_id_concept(self):
         concept = HeritagedataProvider({'id': 'Heritagedata'}, scheme_uri='http://purl.org/heritagedata/schemes/eh_period').get_by_id('PM')

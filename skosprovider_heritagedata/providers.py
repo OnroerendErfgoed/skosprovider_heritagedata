@@ -30,8 +30,6 @@ class HeritagedataProvider(VocabularyProvider):
         """
         if not 'default_language' in metadata:
             metadata['default_language'] = 'en'
-        if metadata['default_language'] != 'en':
-            raise ValueError("Only english('en') is supported as language for this skosprovider")
         if 'scheme_uri' in kwargs:
             self.base_scheme_uri = _split_uri(kwargs['scheme_uri'], 0)
             self.scheme_id = _split_uri(kwargs['scheme_uri'], 1)
@@ -232,11 +230,11 @@ class HeritagedataProvider(VocabularyProvider):
 
     def _get_items(self, service, params):
         # send request to Heritagedata
-        """ Returns the results of the Sparql query to a :class:`lst` of concepts and collections.
+        """ Returns the results of a service method to a :class:`lst` of concepts (and collections).
             The return :class:`lst`  can be empty.
 
-        :param query (str): Sparql query
-        :returns: A :class:`lst` of concepts and collections. Each of these
+        :param service (str): service method
+        :returns: A :class:`lst` of concepts (and collections). Each of these
             is a dict with the following keys:
             * id: id within the conceptscheme
             * uri: :term:`uri` of the concept or collection
@@ -249,17 +247,35 @@ class HeritagedataProvider(VocabularyProvider):
             res = requests.get(request, params=params)
             res.encoding = 'utf-8'
             result = res.json()
-            answer = []
+            d = {}
             for r in result:
-                if 'property' not in r.keys() or r['property'] == str(SKOS.narrower):
+                uri = r['uri']
+                label = None
+                if 'label' in r.keys():
+                    label = r['label']
+                language = None
+                if 'label lang' in r.keys():
+                    language = r['label lang']
+                property = None
+                if 'property' in r.keys():
+                    property = r['property']
+                if not service == 'getConceptRelations' or property == str(SKOS.narrower):
                     item = {
-                    'id': _split_uri(r["uri"], 1),
-                    'uri': r["uri"],
+                    'id': _split_uri(uri, 1),
+                    'uri': uri,
                     'type': 'concept',
-                    'label': r["label"]
+                    'label': label,
+                    'lang': language
                     }
-                    answer.append(item)
-            return answer
+                    if uri not in d:
+                        d[uri] = item
+                    if d[uri]['lang'] == self._get_language():
+                        pass
+                    elif item['lang'] == self._get_language():
+                        d[uri] = item
+                    elif item['lang'] == 'en':
+                        d[uri] = item
+            return list(d.values())
         except:
             return False
 
