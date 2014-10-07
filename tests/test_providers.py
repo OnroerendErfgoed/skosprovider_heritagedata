@@ -8,6 +8,15 @@ import unittest
 
 class HeritagedataProviderTests(unittest.TestCase):
 
+
+    def test_default_provider(self):
+        provider = HeritagedataProvider({'id': 'Heritagedata'},service_scheme_uri='http://heritagedata.org/live/services/')
+        self.assertEqual(provider.base_scheme_uri, 'http://purl.org/heritagedata/schemes')
+        self.assertEqual(provider.scheme_id, 'eh_period')
+        self.assertEqual(provider.service_scheme_uri, 'http://heritagedata.org/live/services')
+
+
+
     def test_default_language_scottish_gaelic(self):
         provider_gd = HeritagedataProvider({'id': 'Heritagedata', 'default_language': 'gd'}, scheme_uri='http://purl.org/heritagedata/schemes/1')
         concept = provider_gd.get_by_id('500614')
@@ -123,3 +132,7 @@ class HeritagedataProviderTests(unittest.TestCase):
         self.assertGreater(len(r), 0)
         for res in r:
             self.assertEqual(res['type'], 'concept')
+
+    def test_get_items_error(self):
+        provider = HeritagedataProvider({'id': 'Heritagedata'},service_scheme_uri='http://heritagedata.org/live/services/')
+        self.assertFalse(provider._get_items("invalid",{}))

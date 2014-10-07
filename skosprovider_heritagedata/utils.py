@@ -33,36 +33,32 @@ class heritagedata_to_skos():
             con.notes = self._create_from_subject_typelist(sub, Note.valid_types)
             clist.append(con)
 
-        for sub, pred, obj in self.graph.triples((None, RDF.type, SKOS.Collection)):
-            uri = str(sub)
-            col = Collection(_split_uri(uri, 1), uri=uri)
-            col.members = self._create_from_subject_predicate(sub, SKOS.member)
-            col.labels = self._create_from_subject_typelist(sub, Label.valid_types)
-            col.notes = self._create_from_subject_typelist(sub, Note.valid_types)
-            clist.append(col)
+# at this moment, Heritagedata does not support SKOS.Collection
+        # for sub, pred, obj in self.graph.triples((None, RDF.type, SKOS.Collection)):
+        #     uri = str(sub)
+        #     col = Collection(_split_uri(uri, 1), uri=uri)
+        #     col.members = self._create_from_subject_predicate(sub, SKOS.member)
+        #     col.labels = self._create_from_subject_typelist(sub, Label.valid_types)
+        #     col.notes = self._create_from_subject_typelist(sub, Note.valid_types)
+        #     clist.append(col)
 
         return clist
 
     def _create_from_subject_typelist(self, subject, typelist):
         list=[]
-        note_uris = []
         for p in typelist:
             term = SKOS.term(p)
-            list.extend(self._create_from_subject_predicate(subject, term, note_uris))
+            list.extend(self._create_from_subject_predicate(subject, term))
         return list
 
-    def _create_from_subject_predicate(self, subject, predicate, note_uris=None):
+    def _create_from_subject_predicate(self, subject, predicate):
         list = []
         for s, p, o in self.graph.triples((subject, predicate, None)):
             type = predicate.split('#')[-1]
             if Label.is_valid_type(type):
                 o = self._create_label(o, type)
             elif Note.is_valid_type(type):
-                if o.toPython() not in note_uris:
-                    note_uris.append(o.toPython())
-                    o = self._create_note(o, type)
-                else:
-                    o = None
+                o = self._create_note(o, type)
             else:
                 o = _split_uri(o, 1)
             if o:
@@ -75,24 +71,16 @@ class heritagedata_to_skos():
             return None
         return Label(literal.toPython(), type, language)
 
-    def _create_note(self, uri, type):
-        note = u''
-        language = 'en'
+    def _create_note(self, literal, type):
+        if not Note.is_valid_type(type):
+            raise ValueError('Type of Note is not valid.')
 
-        # http://vocab.getty.edu/aat/scopeNote
-        for s, p, o in self.graph.triples((uri, RDF.value, None)):
-            note += o.toPython()
-            language = o.language
+        return Note(str(literal.encode("utf-8")), type, self._get_language_from_literal(literal))
 
-        # for http://vocab.getty.edu/aat/rev/
-        for s, p, o in self.graph.triples((uri, DC.type, None)):
-            note += o.toPython()
-        for s, p, o in self.graph.triples((uri, DC.description, None)):
-            note += ': %s' % o.toPython()
-        for s, p, o in self.graph.triples((uri, PROV.startedAtTime, None)):
-            note += ' at %s ' % o.toPython()
-
-        return Note(note, type, language)
+    def _get_language_from_literal(self, data):
+        if data.language is None:
+            return None
+        return data.language.encode("utf-8")
 
 def _split_uri(uri, index):
     return uri.strip('/').rsplit('/', 1)[index]
