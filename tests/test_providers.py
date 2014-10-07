@@ -104,7 +104,8 @@ class HeritagedataProviderTests(unittest.TestCase):
         self.assertRaises(ValueError, HeritagedataProvider({'id': 'Heritagedata'}, scheme_uri='http://purl.org/heritagedata/schemes/eh_period').find, {'type': 'concept', 'collection': {'id': '300007466', 'depth': 'all'}})
 
     def test_find_collections(self):
-        self.assertRaises(ValueError, HeritagedataProvider({'id': 'Heritagedata'}, scheme_uri='http://purl.org/heritagedata/schemes/eh_period').find, {'type': 'collection'})
+        r = HeritagedataProvider({'id': 'Heritagedata'}, scheme_uri='http://purl.org/heritagedata/schemes/eh_period').find({'type': 'collection'})
+        self.assertEquals(r, [])
 
     def test_find_wrong_type(self):
         self.assertRaises(ValueError, HeritagedataProvider({'id': 'Heritagedata'}, scheme_uri='http://purl.org/heritagedata/schemes/eh_period').find, {'type': 'collectie'})

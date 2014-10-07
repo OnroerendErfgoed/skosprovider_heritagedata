@@ -152,12 +152,14 @@ class HeritagedataProvider(VocabularyProvider):
         if 'type' in query:
             type_c = query['type']
         if type_c == 'collection':
-            raise ValueError("type: 'collection' is not used in Heritagedata so cannot be used as type")
-        if type_c not in ('all', 'concept'):
-            raise ValueError("type: only the following values are allowed: 'all', 'concept'")
+            warnings.warn("This provider doesn't support collections at the moment of implementation because Heritagedata doesn't use SKOS:Collection.", UserWarning)
+            return []
+        if type_c not in ('all', 'concept', 'collection'):
+            raise ValueError("type: only the following values are allowed: 'all', 'concept', 'collection'")
         #collection
         if 'collection' in query:
-            raise ValueError("collection: 'collection' is not used in Heritagedata")
+            warnings.warn("This provider doesn't support collections at the moment of implementation because Heritagedata doesn't use SKOS:Collection.", UserWarning)
+            raise ValueError('You are searching for items in an unexisting collection.')
         params = {'schemeURI': self.scheme_uri, 'contains': label}
         return self._get_items("getConceptLabelMatch", params)
 
