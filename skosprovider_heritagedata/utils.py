@@ -2,26 +2,43 @@
 # -*- coding: utf-8 -*-
 
 import rdflib
+from rdflib.term import URIRef
 
 from skosprovider.skos import (
     Concept,
     Collection,
     Label,
-    Note
-)
+    Note,
+    ConceptScheme)
 
 import logging
 log = logging.getLogger(__name__)
 
-from rdflib.namespace import RDF, SKOS, DC
+from rdflib.namespace import RDF, SKOS, DC, RDFS
+
 PROV = rdflib.Namespace('http://www.w3.org/ns/prov#')
 
 class heritagedata_to_skos():
 
-    def __init__(self, graph):
-        self.graph = graph
+    def __init__(self, concept_scheme=None):
+        self.graph = None
+        self.concept_scheme = concept_scheme
 
-    def from_graph(self):
+    def conceptscheme_from_uri(self, conceptscheme_uri):
+        self.graph = uri_to_graph('%s.rdf' % (conceptscheme_uri))
+
+        # get the conceptscheme
+        conceptscheme = ConceptScheme(conceptscheme_uri)
+        conceptscheme.notes = []
+        conceptscheme.labels = []
+        if self.graph is not False:
+            for s, p, o in self.graph.triples((URIRef(conceptscheme_uri), RDFS.label, None)):
+                label = Label(o.toPython(), "prefLabel", 'en')
+                conceptscheme.labels.append(label)
+        return conceptscheme
+
+    def things_from_graph(self, graph):
+        self.graph =graph
         clist = []
         for sub, pred, obj in self.graph.triples((None, RDF.type, SKOS.Concept)):
             uri = str(sub)
@@ -31,9 +48,11 @@ class heritagedata_to_skos():
             con.related = self._create_from_subject_predicate(sub, SKOS.related)
             con.labels = self._create_from_subject_typelist(sub, Label.valid_types)
             con.notes = self._create_from_subject_typelist(sub, Note.valid_types)
+            con.subordinate_arrays = []
+            con.concept_scheme = self.concept_scheme
             clist.append(con)
 
-# at this moment, Heritagedata does not support SKOS.Collection
+    # at this moment, Heritagedata does not support SKOS.Collection
         # for sub, pred, obj in self.graph.triples((None, RDF.type, SKOS.Collection)):
         #     uri = str(sub)
         #     col = Collection(_split_uri(uri, 1), uri=uri)
@@ -84,4 +103,19 @@ class heritagedata_to_skos():
 
 def _split_uri(uri, index):
     return uri.strip('/').rsplit('/', 1)[index]
+
+def uri_to_graph(uri):
+    graph = rdflib.Graph()
+    try:
+        graph.parse(uri)
+        return graph
+    # for python2.7 this is urllib2.HTTPError
+    # for python3 this is urllib.error.HTTPError
+    except Exception as err:
+        if hasattr(err, 'code'):
+            if err.code == 404:
+                return False
+        else:
+            raise
+
 

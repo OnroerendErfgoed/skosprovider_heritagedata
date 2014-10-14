@@ -20,6 +20,7 @@ class HeritagedataProviderTests(unittest.TestCase):
     def test_default_language_scottish_gaelic(self):
         provider_gd = HeritagedataProvider({'id': 'Heritagedata', 'default_language': 'gd'}, scheme_uri='http://purl.org/heritagedata/schemes/1')
         concept = provider_gd.get_by_id('500614')
+        concept = concept.__dict__
         self.assertEqual(concept['uri'], 'http://purl.org/heritagedata/schemes/1/concepts/500614')
 
         result = provider_gd.find({'label': 'LOCH', 'type': 'concept'})
@@ -29,6 +30,7 @@ class HeritagedataProviderTests(unittest.TestCase):
 
         provider_en = HeritagedataProvider({'id': 'Heritagedata'}, scheme_uri='http://purl.org/heritagedata/schemes/1')
         concept = provider_en.get_by_id('500614')
+        concept = concept.__dict__
         self.assertEqual(concept['uri'], 'http://purl.org/heritagedata/schemes/1/concepts/500614')
 
         result = provider_en.find({'label': 'LOCH', 'type': 'concept'})
@@ -39,6 +41,7 @@ class HeritagedataProviderTests(unittest.TestCase):
 
     def test_get_by_id_concept(self):
         concept = HeritagedataProvider({'id': 'Heritagedata'}, scheme_uri='http://purl.org/heritagedata/schemes/eh_period').get_by_id('PM')
+        concept = concept.__dict__
         self.assertEqual(concept['uri'], 'http://purl.org/heritagedata/schemes/eh_period/concepts/PM')
         self.assertEqual(concept['type'], 'concept')
         self.assertIsInstance(concept['labels'], list)
@@ -63,6 +66,7 @@ class HeritagedataProviderTests(unittest.TestCase):
 
     def test_get_by_uri(self):
         concept = HeritagedataProvider({'id': 'Heritagedata'}, scheme_uri='http://purl.org/heritagedata/schemes/eh_period').get_by_uri('http://purl.org/heritagedata/schemes/eh_period/concepts/PM')
+        concept = concept.__dict__
         self.assertEqual(concept['uri'], 'http://purl.org/heritagedata/schemes/eh_period/concepts/PM')
         self.assertEqual(concept['id'], 'PM')
 
@@ -90,7 +94,7 @@ class HeritagedataProviderTests(unittest.TestCase):
         keys_first_display = childeren_Heritagedata_pm[0].keys()
         for key in ['id', 'type', 'label', 'uri']:
             self.assertIn(key, keys_first_display)
-        self.assertIn("VICTORIAN", [label['label'] for label in childeren_Heritagedata_pm])
+        self.assertIn("TUDOR", [label['label'] for label in childeren_Heritagedata_pm])
 
     def test_expand(self):
         all_childeren_pm = HeritagedataProvider({'id': 'Heritagedata'}, scheme_uri='http://purl.org/heritagedata/schemes/eh_period').expand('PM')

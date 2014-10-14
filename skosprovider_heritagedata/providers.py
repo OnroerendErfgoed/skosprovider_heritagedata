@@ -1,5 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+from language_tags import tags
 import rdflib
 from rdflib.namespace import SKOS
 import requests
@@ -7,7 +8,7 @@ import warnings
 import logging
 from skosprovider.providers import VocabularyProvider
 from skosprovider_heritagedata.utils import (
-    heritagedata_to_skos, _split_uri)
+    heritagedata_to_skos, _split_uri, uri_to_graph)
 
 log = logging.getLogger(__name__)
 
@@ -42,8 +43,8 @@ class HeritagedataProvider(VocabularyProvider):
             self.service_scheme_uri = kwargs['service_scheme_uri'].strip('/')
         else:
             self.service_scheme_uri = "http://heritagedata.org/live/services"
-
-        super(HeritagedataProvider, self).__init__(metadata, **kwargs)
+        concept_scheme = heritagedata_to_skos().conceptscheme_from_uri(self.scheme_uri)
+        super(HeritagedataProvider, self).__init__(metadata, concept_scheme=concept_scheme, **kwargs)
 
     def _get_language(self, **kwargs):
         return self.metadata['default_language']
@@ -55,24 +56,17 @@ class HeritagedataProvider(VocabularyProvider):
         :return: corresponding :class:`skosprovider.skos.Concept` or :class:`skosprovider.skos.Concept`.
             Returns None if non-existing id
         """
-        graph = rdflib.Graph()
-        try:
-            graph.parse('%s/%s/%s.rdf' % (self.scheme_uri, "concepts", id))
-            # get the concept
-            graph_to_skos = heritagedata_to_skos(graph).from_graph()
-            if len(graph_to_skos) == 0:
-                return None
-            concept = graph_to_skos[0]
-            return concept
+        graph = uri_to_graph('%s/%s/%s.rdf' % (self.scheme_uri, "concepts", id))
+        if graph is False:
+            return False
+        # get the concept
+        things = heritagedata_to_skos(self.concept_scheme).things_from_graph(graph)
+        if len(things) == 0:
+            return None
+        c = things[0]
+        return c
 
-        # for python2.7 this is urllib2.HTTPError
-        # for python3 this is urllib.error.HTTPError
-        except Exception as err:
-            if hasattr(err, 'code'):
-                if err.code == 404:
-                    return False
-            else:
-                raise
+
 
     def get_by_uri(self, uri):
         """ Get a :class:`skosprovider.skos.Concept` or :class:`skosprovider.skos.Collection` by uri
@@ -269,14 +263,17 @@ class HeritagedataProvider(VocabularyProvider):
                     'label': label,
                     'lang': language
                     }
-                    if uri not in d:
-                        d[uri] = item
-                    if d[uri]['lang'] == self._get_language():
-                        pass
-                    elif item['lang'] == self._get_language():
-                        d[uri] = item
-                    elif item['lang'] == 'en':
-                        d[uri] = item
+                if uri not in d:
+                    d[uri] = item
+                if tags.tag(d[uri]['lang']).format == tags.tag(self._get_language()).format:
+                    pass
+                elif tags.tag(item['lang']).format == tags.tag(self._get_language()).format:
+                    d[uri] = item
+                elif tags.tag(item['lang']).language and (tags.tag(item['lang']).language.format == tags.tag(self._get_language()).language.format):
+                    d[uri] = item
+                elif tags.tag(item['lang']).format == 'en':
+                    d[uri] = item
+                return list(d.values())
             return list(d.values())
         except:
             return False
