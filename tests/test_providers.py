@@ -54,6 +54,12 @@ class HeritagedataProviderTests(unittest.TestCase):
             self.assertIn(label, preflabels_conc)
 
         self.assertGreater(len(concept['notes']), 0)
+        self.assertIsNotNone(concept['notes'][0])
+        self.assertEqual(concept['notes'][0].language, 'en')
+        self.assertEqual(concept['notes'][0].note, 'Begins with the dissolution of the monasteries and'
+                                                   ' ends with the death of Queen Victoria. '
+                                                   'Use more specific period where known.')
+        self.assertEqual(concept['notes'][0].type, 'scopeNote')
 
         self.assertEqual(concept['id'], 'PM')
         self.assertEqual(len(concept['broader']), 0)
