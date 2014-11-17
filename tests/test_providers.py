@@ -15,7 +15,9 @@ class HeritagedataProviderTests(unittest.TestCase):
         self.assertEqual(provider.scheme_id, 'eh_period')
         self.assertEqual(provider.service_scheme_uri, 'http://heritagedata.org/live/services')
 
-
+    def test_get_top_concepts_provider(self):
+        provider = HeritagedataProvider({'id': 'Heritagedata'}, scheme_uri='http://purl.org/heritagedata/schemes/eh_period')
+        self.assertEqual(len(provider.get_top_concepts()), 8)
 
     def test_default_language_scottish_gaelic(self):
         provider_gd = HeritagedataProvider({'id': 'Heritagedata', 'default_language': 'gd'}, scheme_uri='http://purl.org/heritagedata/schemes/1')

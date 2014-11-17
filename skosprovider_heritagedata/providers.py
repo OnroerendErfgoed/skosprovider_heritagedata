@@ -273,7 +273,6 @@ class HeritagedataProvider(VocabularyProvider):
                     d[uri] = item
                 elif tags.tag(item['lang']).format == 'en':
                     d[uri] = item
-                return list(d.values())
             return list(d.values())
         except:
             return False
