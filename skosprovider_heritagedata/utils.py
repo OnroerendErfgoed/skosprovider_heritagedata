@@ -103,7 +103,7 @@ class heritagedata_to_skos():
         if not Note.is_valid_type(type):
             raise ValueError('Type of Note is not valid.')
 
-        return Note(text_(literal.value), type, self._get_language_from_literal(literal))
+        return Note(text_(literal.value, encoding="utf-8"), type, self._get_language_from_literal(literal))
 
     def _get_language_from_literal(self, data):
         if data.language is None:
