@@ -236,11 +236,16 @@ class HeritagedataProvider(VocabularyProvider):
             * label: A label to represent the concept or collection.
         """
 
+
+        request = self.service_scheme_uri + "/" + service
         try:
-            request = self.service_scheme_uri + "/" + service
             res = requests.get(request, params=params)
-            if res.status_code == 404:
-                raise ReferenceError
+        except:
+            raise ReferenceError("Request kon niet worden uitgevoerd - REQUEST: %s - PARAMS: %s" % (request, params))
+
+        if res.status_code == 404:
+            raise ReferenceError("Service geeft een 404 (Resource Not Found) - REQUEST: %s - PARAMS: %s" % (request, params))
+        try:
             res.encoding = 'utf-8'
             result = res.json()
             d = {}
@@ -274,10 +279,7 @@ class HeritagedataProvider(VocabularyProvider):
                 elif tags.tag(item['lang']).format == 'en':
                     d[uri] = item
             return list(d.values())
-        except ReferenceError:
-            raise ReferenceError("Request kon niet worden uitgevoerd: REQUEST: %s PARAMS: %s" % (request, params))
-
         except:
-            return False
+            raise StandardError("Service response kan nket vertaald worden naar Items - REQUEST: %s - PARAMS: %s" % (request, params))
 
 
