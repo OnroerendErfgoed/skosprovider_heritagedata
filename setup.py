@@ -21,7 +21,7 @@ requires = [
 setup(
     name='skosprovider_heritagedata',
     version='0.2.0',
-    description='Skosprovider implementation of the heritagedata Vocabularies',
+    description='Skosprovider implementation of the heritagedata.org Vocabularies',
     long_description=README,
     packages=packages,
     include_package_data=True,
@@ -40,6 +40,6 @@ setup(
     author='Flanders Heritage Agency',
     author_email='ict@onroerenderfgoed.be',
     url='https://github.com/OnroerendErfgoed/skosprovider_heritagedata',
-    keywords='heritagedata skos skosprovider',
+    keywords='heritagedata.org skos skosprovider',
     test_suite='nose.collector'
 )

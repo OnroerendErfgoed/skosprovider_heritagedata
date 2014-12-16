@@ -24,9 +24,9 @@ class HeritagedataProviderTests(unittest.TestCase):
         self.assertEqual(provider.service_scheme_uri, 'http://heritagedata.org/live/services_not_available')
         self.assertRaises(ReferenceError, provider.find, {'label': 'LOCH', 'type': 'concept'})
 
-
-
-
+    def test_get_top_concepts_provider(self):
+        provider = HeritagedataProvider({'id': 'Heritagedata'}, scheme_uri='http://purl.org/heritagedata/schemes/eh_period')
+        self.assertEqual(len(provider.get_top_concepts()), 8)
 
     def test_default_language_scottish_gaelic(self):
         provider_gd = HeritagedataProvider({'id': 'Heritagedata', 'default_language': 'gd'}, scheme_uri='http://purl.org/heritagedata/schemes/1')
@@ -65,6 +65,12 @@ class HeritagedataProviderTests(unittest.TestCase):
             self.assertIn(label, preflabels_conc)
 
         self.assertGreater(len(concept['notes']), 0)
+        self.assertIsNotNone(concept['notes'][0])
+        self.assertEqual(concept['notes'][0].language, 'en')
+        self.assertEqual(concept['notes'][0].note, 'Begins with the dissolution of the monasteries and'
+                                                   ' ends with the death of Queen Victoria. '
+                                                   'Use more specific period where known.')
+        self.assertEqual(concept['notes'][0].type, 'scopeNote')
 
         self.assertEqual(concept['id'], 'PM')
         self.assertEqual(len(concept['broader']), 0)

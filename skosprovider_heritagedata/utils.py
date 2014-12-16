@@ -12,14 +12,23 @@ from skosprovider.skos import (
     ConceptScheme)
 
 import logging
+import sys
+
+PY3 = sys.version_info[0] == 3
+
+if PY3:  # pragma: no cover
+    binary_type = bytes
+else:  # pragma: no cover
+    binary_type = str
+
 log = logging.getLogger(__name__)
 
 from rdflib.namespace import RDF, SKOS, DC, RDFS
 
 PROV = rdflib.Namespace('http://www.w3.org/ns/prov#')
 
-class heritagedata_to_skos():
 
+class heritagedata_to_skos():
     def __init__(self, concept_scheme=None):
         self.graph = None
         self.concept_scheme = concept_scheme
@@ -38,7 +47,7 @@ class heritagedata_to_skos():
         return conceptscheme
 
     def things_from_graph(self, graph):
-        self.graph =graph
+        self.graph = graph
         clist = []
         for sub, pred, obj in self.graph.triples((None, RDF.type, SKOS.Concept)):
             uri = str(sub)
@@ -52,9 +61,9 @@ class heritagedata_to_skos():
             con.concept_scheme = self.concept_scheme
             clist.append(con)
 
-    # at this moment, Heritagedata does not support SKOS.Collection
+            # at this moment, Heritagedata does not support SKOS.Collection
         # for sub, pred, obj in self.graph.triples((None, RDF.type, SKOS.Collection)):
-        #     uri = str(sub)
+        # uri = str(sub)
         #     col = Collection(_split_uri(uri, 1), uri=uri)
         #     col.members = self._create_from_subject_predicate(sub, SKOS.member)
         #     col.labels = self._create_from_subject_typelist(sub, Label.valid_types)
@@ -64,7 +73,7 @@ class heritagedata_to_skos():
         return clist
 
     def _create_from_subject_typelist(self, subject, typelist):
-        list=[]
+        list = []
         for p in typelist:
             term = SKOS.term(p)
             list.extend(self._create_from_subject_predicate(subject, term))
@@ -87,22 +96,24 @@ class heritagedata_to_skos():
     def _create_label(self, literal, type):
         language = literal.language
         if language is None:
-            return None
+            return 'und'  # return undefined code when no language
         return Label(literal.toPython(), type, language)
 
     def _create_note(self, literal, type):
         if not Note.is_valid_type(type):
             raise ValueError('Type of Note is not valid.')
 
-        return Note(str(literal.encode("utf-8")), type, self._get_language_from_literal(literal))
+        return Note(text_(literal.value, encoding="utf-8"), type, self._get_language_from_literal(literal))
 
     def _get_language_from_literal(self, data):
         if data.language is None:
-            return None
-        return data.language.encode("utf-8")
+            return 'und'  # return undefined code when no language
+        return text_(data.language, encoding="utf-8")
+
 
 def _split_uri(uri, index):
     return uri.strip('/').rsplit('/', 1)[index]
+
 
 def uri_to_graph(uri):
     graph = rdflib.Graph()
@@ -113,5 +124,13 @@ def uri_to_graph(uri):
         raise ReferenceError("URI niet bereikbaar: %s" % uri)
 
 
+
+
+def text_(s, encoding='latin-1', errors='strict'):
+    """ If ``s`` is an instance of ``binary_type``, return
+    ``s.decode(encoding, errors)``, otherwise return ``s``"""
+    if isinstance(s, binary_type):
+        return s.decode(encoding, errors)
+    return s
 
 

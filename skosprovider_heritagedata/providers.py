@@ -273,7 +273,6 @@ class HeritagedataProvider(VocabularyProvider):
                     d[uri] = item
                 elif tags.tag(item['lang']).format == 'en':
                     d[uri] = item
-                return list(d.values())
             return list(d.values())
         except ReferenceError:
             raise ReferenceError("Request kon niet worden uitgevoerd: REQUEST: %s PARAMS: %s" % (request, params))
