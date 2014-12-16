@@ -154,6 +154,10 @@ class HeritagedataProviderTests(unittest.TestCase):
         for res in r:
             self.assertEqual(res['type'], 'concept')
 
-    def test_get_items_error(self):
+    def test_get_items_referenceerror(self):
         provider = HeritagedataProvider({'id': 'Heritagedata'},service_scheme_uri='http://heritagedata.org/live/services/')
         self.assertRaises(ReferenceError, provider._get_items,"invalid",{})
+
+    def test_get_items_standarderror(self):
+        provider = HeritagedataProvider({'id': 'Heritagedata'},service_scheme_uri='http://heritagedata.org/live/services/')
+        self.assertRaises(StandardError, provider._get_items,"getConceptLabelMatch",{"fhgfhg"})
