@@ -109,13 +109,9 @@ def uri_to_graph(uri):
     try:
         graph.parse(uri)
         return graph
-    # for python2.7 this is urllib2.HTTPError
-    # for python3 this is urllib.error.HTTPError
-    except Exception as err:
-        if hasattr(err, 'code'):
-            if err.code == 404:
-                return False
-        else:
-            raise
+    except:
+        raise ReferenceError("URI niet bereikbaar: %s" % uri)
+
+
 
 

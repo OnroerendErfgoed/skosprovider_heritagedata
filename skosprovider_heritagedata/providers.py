@@ -57,8 +57,6 @@ class HeritagedataProvider(VocabularyProvider):
             Returns None if non-existing id
         """
         graph = uri_to_graph('%s/%s/%s.rdf' % (self.scheme_uri, "concepts", id))
-        if graph is False:
-            return False
         # get the concept
         things = heritagedata_to_skos(self.concept_scheme).things_from_graph(graph)
         if len(things) == 0:
@@ -241,6 +239,8 @@ class HeritagedataProvider(VocabularyProvider):
         try:
             request = self.service_scheme_uri + "/" + service
             res = requests.get(request, params=params)
+            if res.status_code == 404:
+                raise ReferenceError
             res.encoding = 'utf-8'
             result = res.json()
             d = {}
@@ -275,6 +275,10 @@ class HeritagedataProvider(VocabularyProvider):
                     d[uri] = item
                 return list(d.values())
             return list(d.values())
+        except ReferenceError:
+            raise ReferenceError("Request kon niet worden uitgevoerd: REQUEST: %s PARAMS: %s" % (request, params))
+
         except:
             return False
+
 
