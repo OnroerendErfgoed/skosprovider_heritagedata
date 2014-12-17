@@ -280,6 +280,6 @@ class HeritagedataProvider(VocabularyProvider):
                     d[uri] = item
             return list(d.values())
         except:
-            raise StandardError("Service response kan nket vertaald worden naar Items - REQUEST: %s - PARAMS: %s" % (request, params))
+            raise ValueError("Service response kan nket vertaald worden naar Items - REQUEST: %s - PARAMS: %s" % (request, params))
 
 

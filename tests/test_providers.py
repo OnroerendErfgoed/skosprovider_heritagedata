@@ -158,6 +158,10 @@ class HeritagedataProviderTests(unittest.TestCase):
         provider = HeritagedataProvider({'id': 'Heritagedata'},service_scheme_uri='http://heritagedata.org/live/services/')
         self.assertRaises(ReferenceError, provider._get_items,"invalid",{})
 
-    def test_get_items_standarderror(self):
+    def test_get_items_referenceerror2(self):
         provider = HeritagedataProvider({'id': 'Heritagedata'},service_scheme_uri='http://heritagedata.org/live/services/')
-        self.assertRaises(StandardError, provider._get_items,"getConceptLabelMatch",{"fhgfhg"})
+        self.assertRaises(ReferenceError, provider._get_items,"getConceptLabelMatch",{"fhgfhg"})
+
+    def test_get_items_referenceerror3(self):
+        provider = HeritagedataProvider({'id': 'Heritagedata'},service_scheme_uri='http://heritagedata_not_existent.org/live/services/')
+        self.assertRaises(ReferenceError, provider._get_items,"getConceptLabelMatch",{'contains': 'VICTORIAN', 'schemeURI': 'http://purl.org/heritagedata/schemes/eh_period'})
