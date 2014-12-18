@@ -1,5 +1,7 @@
-#!/usr/bin/python
 # -*- coding: utf-8 -*-
+'''
+Utility functions for :mod:`skosprovider_heritagedata`.
+'''
 
 import rdflib
 from rdflib.term import URIRef
@@ -118,14 +120,18 @@ def _split_uri(uri, index):
 
 
 def uri_to_graph(uri):
+    '''
+    :param string uri: :term:`URI` where the RDF data can be found.
+    :rtype: rdflib.Graph
+    :raises skosprovider.exceptions.ProviderUnavailableException: if the 
+        heritagedata.org services are down
+    '''
     graph = rdflib.Graph()
     try:
         graph.parse(uri)
         return graph
     except:
         raise ProviderUnavailableException("URI niet bereikbaar: %s" % uri)
-
-
 
 
 def text_(s, encoding='latin-1', errors='strict'):

@@ -1,17 +1,27 @@
-#!/usr/bin/python
 # -*- coding: utf-8 -*-
-from language_tags import tags
-import rdflib
-from rdflib.namespace import SKOS
+'''
+This module implements a :class:`skosprovider.providers.VocabularyProvider`
+for http://www.heritagedata.org.
+'''
+
 import requests
 import warnings
 import logging
+log = logging.getLogger(__name__)
+
+from language_tags import tags
+
+import rdflib
+from rdflib.namespace import SKOS
+
 from skosprovider.exceptions import ProviderUnavailableException
 from skosprovider.providers import VocabularyProvider
-from skosprovider_heritagedata.utils import (
-    heritagedata_to_skos, _split_uri, uri_to_graph)
 
-log = logging.getLogger(__name__)
+from skosprovider_heritagedata.utils import (
+    heritagedata_to_skos, 
+    _split_uri, 
+    uri_to_graph
+)
 
 
 class HeritagedataProvider(VocabularyProvider):
@@ -282,5 +292,3 @@ class HeritagedataProvider(VocabularyProvider):
             return list(d.values())
         except:
             raise ValueError("Service response kan niet vertaald worden naar Items - REQUEST: %s - PARAMS: %s" % (request, params))
-
-

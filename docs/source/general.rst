@@ -104,7 +104,7 @@ www.heritagedata.org/live/services/getSchemes?pretty
             "uri": "http://purl.org/heritagedata/schemes/eh_tmc",
             "label": "MARITIME CRAFT TYPE (EH)",
             "label lang": "en",
-            "description": "A thesaurus of craft types which survive as wrecks in English Heritage�s maritime record",
+            "description": "A thesaurus of craft types which survive as wrecks in English Heritage's maritime record",
             "attribution": "English Heritage"
         },
         {
