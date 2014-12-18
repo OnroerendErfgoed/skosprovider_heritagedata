@@ -7,7 +7,10 @@ This script demonstrates using the HeritagedataProvider to get the concept of
 
 from skosprovider_heritagedata.providers import HeritagedataProvider
 
-periodprovider = HeritagedataProvider({'id': 'Heritagedata'}, scheme_uri='http://purl.org/heritagedata/schemes/eh_period')
+periodprovider = HeritagedataProvider(
+    {'id': 'Heritagedata'},
+    scheme_uri='http://purl.org/heritagedata/schemes/eh_period'
+)
 
 pm = periodprovider.get_by_id('PM')
 
