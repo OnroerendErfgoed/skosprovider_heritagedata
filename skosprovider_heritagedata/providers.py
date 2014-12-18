@@ -1,18 +1,24 @@
-#!/usr/bin/python
 # -*- coding: utf-8 -*-
-from language_tags import tags
-import rdflib
-from rdflib.namespace import SKOS
+'''
+This module implements a :class:`skosprovider.providers.VocabularyProvider`
+for http://www.heritagedata.org.
+'''
+
 import requests
 import warnings
 import logging
 from requests.exceptions import ConnectionError
+log = logging.getLogger(__name__)
+from language_tags import tags
+from rdflib.namespace import SKOS
 from skosprovider.exceptions import ProviderUnavailableException
 from skosprovider.providers import VocabularyProvider
-from skosprovider_heritagedata.utils import (_split_uri, uri_to_graph, conceptscheme_from_uri, things_from_graph)
-
-log = logging.getLogger(__name__)
-
+from skosprovider_heritagedata.utils import (
+    _split_uri, 
+    uri_to_graph,
+    conceptscheme_from_uri,
+    things_from_graph
+)
 
 class HeritagedataProvider(VocabularyProvider):
     """A provider that can work with the Heritagedata services of
@@ -236,16 +242,13 @@ class HeritagedataProvider(VocabularyProvider):
             * label: A label to represent the concept or collection.
         """
 
-
         request = self.service_scheme_uri + "/" + service
         try:
             res = requests.get(request, params=params)
         except ConnectionError as e:
             raise ProviderUnavailableException("Request could not be executed - Request: %s - Params: %s" % (request, params))
-
         if res.status_code == 404:
             raise ProviderUnavailableException("Service not found (status_code 404) - Request: %s - Params: %s" % (request, params))
-
         res.encoding = 'utf-8'
         result = res.json()
         d = {}
@@ -279,5 +282,3 @@ class HeritagedataProvider(VocabularyProvider):
             elif tags.tag(item['lang']).format == 'en':
                 d[uri] = item
         return list(d.values())
-
-
