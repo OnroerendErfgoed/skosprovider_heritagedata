@@ -9,8 +9,7 @@ import logging
 from requests.exceptions import ConnectionError
 from skosprovider.exceptions import ProviderUnavailableException
 from skosprovider.providers import VocabularyProvider
-from skosprovider_heritagedata.utils import (
-    heritagedata_to_skos, _split_uri, uri_to_graph)
+from skosprovider_heritagedata.utils import (_split_uri, uri_to_graph, conceptscheme_from_uri, things_from_graph)
 
 log = logging.getLogger(__name__)
 
@@ -45,7 +44,7 @@ class HeritagedataProvider(VocabularyProvider):
             self.service_scheme_uri = kwargs['service_scheme_uri'].strip('/')
         else:
             self.service_scheme_uri = "http://heritagedata.org/live/services"
-        concept_scheme = heritagedata_to_skos().conceptscheme_from_uri(self.scheme_uri)
+        concept_scheme = conceptscheme_from_uri(self.scheme_uri)
         super(HeritagedataProvider, self).__init__(metadata, concept_scheme=concept_scheme, **kwargs)
 
     def _get_language(self, **kwargs):
@@ -62,13 +61,11 @@ class HeritagedataProvider(VocabularyProvider):
         if graph is False:
             return False
         # get the concept
-        things = heritagedata_to_skos(self.concept_scheme).things_from_graph(graph)
+        things = things_from_graph(graph, self.concept_scheme)
         if len(things) == 0:
             return None
         c = things[0]
         return c
-
-
 
     def get_by_uri(self, uri):
         """ Get a :class:`skosprovider.skos.Concept` or :class:`skosprovider.skos.Collection` by uri
@@ -79,7 +76,6 @@ class HeritagedataProvider(VocabularyProvider):
         """
         id = _split_uri(uri, 1)
         return self.get_by_id(id)
-
 
     def find(self, query):
         '''Find concepts that match a certain query.
