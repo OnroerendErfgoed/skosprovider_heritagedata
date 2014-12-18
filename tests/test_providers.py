@@ -155,14 +155,28 @@ class HeritagedataProviderTests(unittest.TestCase):
         for res in r:
             self.assertEqual(res['type'], 'concept')
 
-    def test_get_items_referenceerror(self):
+    def test_get_items(self):
         provider = HeritagedataProvider({'id': 'Heritagedata'},service_scheme_uri='http://heritagedata.org/live/services/')
-        self.assertRaises(ProviderUnavailableException, provider._get_items,"invalid",{})
+        res = provider._get_items("getConceptLabelMatch", {'contains': 'VICTORIAN', 'schemeURI': 'http://purl.org/heritagedata/schemes/eh_period'})
+        self.assertEqual(len(res), 1)
+        self.assertEqual(res[0]['label'], 'VICTORIAN')
+        self.assertEqual(res[0]['id'], 'VIC')
+        self.assertEqual(res[0]['lang'], 'en')
+        self.assertEqual(res[0]['type'], 'concept')
+        self.assertEqual(res[0]['uri'], 'http://purl.org/heritagedata/schemes/eh_period/concepts/VIC')
 
-    def test_get_items_referenceerror2(self):
+    def test_get_items_non_exist_service(self):
+        provider = HeritagedataProvider({'id': 'Heritagedata'},service_scheme_uri='http://heritagedata.org/live/services2/')
+        self.assertRaises(ProviderUnavailableException, provider._get_items, "getConceptLabelMatch",{'contains': 'VICTORIAN', 'schemeURI': 'http://purl.org/heritagedata/schemes/eh_period'})
+
+    def test_get_items_non_exist_service2(self):
         provider = HeritagedataProvider({'id': 'Heritagedata'},service_scheme_uri='http://heritagedata.org/live/services/')
-        self.assertRaises(ProviderUnavailableException, provider._get_items,"getConceptLabelMatch",{"fhgfhg"})
+        self.assertRaises(ProviderUnavailableException, provider._get_items, "invalid", {})
 
-    def test_get_items_referenceerror3(self):
-        provider = HeritagedataProvider({'id': 'Heritagedata'},service_scheme_uri='http://heritagedata_not_existent.org/live/services/')
+    def test_get_items_wrong_params(self):
+        provider = HeritagedataProvider({'id': 'Heritagedata'},service_scheme_uri='http://heritagedata.org/live/services/')
+        self.assertRaises(ValueError, provider._get_items, "getConceptLabelMatch", {"fhgfhg"})
+
+    def test_get_items_non_exist_provider(self):
+        provider = HeritagedataProvider({'id': 'Heritagedata'},service_scheme_uri='http://not_existent.org/live/services/')
         self.assertRaises(ProviderUnavailableException, provider._get_items,"getConceptLabelMatch",{'contains': 'VICTORIAN', 'schemeURI': 'http://purl.org/heritagedata/schemes/eh_period'})

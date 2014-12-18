@@ -6,6 +6,7 @@ from rdflib.namespace import SKOS
 import requests
 import warnings
 import logging
+from requests.exceptions import ConnectionError
 from skosprovider.exceptions import ProviderUnavailableException
 from skosprovider.providers import VocabularyProvider
 from skosprovider_heritagedata.utils import (
@@ -58,6 +59,8 @@ class HeritagedataProvider(VocabularyProvider):
             Returns None if non-existing id
         """
         graph = uri_to_graph('%s/%s/%s.rdf' % (self.scheme_uri, "concepts", id))
+        if graph is False:
+            return False
         # get the concept
         things = heritagedata_to_skos(self.concept_scheme).things_from_graph(graph)
         if len(things) == 0:
@@ -202,7 +205,7 @@ class HeritagedataProvider(VocabularyProvider):
         expanded.append(id)
         expanded.extend(self._get_children(id, all=True))
         if len(expanded) == 1:
-            if self.get_by_id(id) is None:
+            if self.get_by_id(id) is False:
                 return False
         return expanded
 
@@ -241,46 +244,44 @@ class HeritagedataProvider(VocabularyProvider):
         request = self.service_scheme_uri + "/" + service
         try:
             res = requests.get(request, params=params)
-        except:
-            raise ProviderUnavailableException("Request kon niet worden uitgevoerd - REQUEST: %s - PARAMS: %s" % (request, params))
+        except ConnectionError as e:
+            raise ProviderUnavailableException("Request could not be executed - Request: %s - Params: %s" % (request, params))
 
         if res.status_code == 404:
-            raise ProviderUnavailableException("Service geeft een 404 (Resource Not Found) - REQUEST: %s - PARAMS: %s" % (request, params))
-        try:
-            res.encoding = 'utf-8'
-            result = res.json()
-            d = {}
-            for r in result:
-                uri = r['uri']
-                label = None
-                if 'label' in r.keys():
-                    label = r['label']
-                language = None
-                if 'label lang' in r.keys():
-                    language = r['label lang']
-                property = None
-                if 'property' in r.keys():
-                    property = r['property']
-                if not service == 'getConceptRelations' or property == str(SKOS.narrower):
-                    item = {
-                    'id': _split_uri(uri, 1),
-                    'uri': uri,
-                    'type': 'concept',
-                    'label': label,
-                    'lang': language
-                    }
-                if uri not in d:
-                    d[uri] = item
-                if tags.tag(d[uri]['lang']).format == tags.tag(self._get_language()).format:
-                    pass
-                elif tags.tag(item['lang']).format == tags.tag(self._get_language()).format:
-                    d[uri] = item
-                elif tags.tag(item['lang']).language and (tags.tag(item['lang']).language.format == tags.tag(self._get_language()).language.format):
-                    d[uri] = item
-                elif tags.tag(item['lang']).format == 'en':
-                    d[uri] = item
-            return list(d.values())
-        except:
-            raise ValueError("Service response kan niet vertaald worden naar Items - REQUEST: %s - PARAMS: %s" % (request, params))
+            raise ProviderUnavailableException("Service not found (status_code 404) - Request: %s - Params: %s" % (request, params))
+
+        res.encoding = 'utf-8'
+        result = res.json()
+        d = {}
+        for r in result:
+            uri = r['uri']
+            label = None
+            if 'label' in r.keys():
+                label = r['label']
+            language = None
+            if 'label lang' in r.keys():
+                language = r['label lang']
+            property = None
+            if 'property' in r.keys():
+                property = r['property']
+            if not service == 'getConceptRelations' or property == str(SKOS.narrower):
+                item = {
+                'id': _split_uri(uri, 1),
+                'uri': uri,
+                'type': 'concept',
+                'label': label,
+                'lang': language
+                }
+            if uri not in d:
+                d[uri] = item
+            if tags.tag(d[uri]['lang']).format == tags.tag(self._get_language()).format:
+                pass
+            elif tags.tag(item['lang']).format == tags.tag(self._get_language()).format:
+                d[uri] = item
+            elif tags.tag(item['lang']).language and (tags.tag(item['lang']).language.format == tags.tag(self._get_language()).language.format):
+                d[uri] = item
+            elif tags.tag(item['lang']).format == 'en':
+                d[uri] = item
+        return list(d.values())
 
 

@@ -1,5 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+from urllib2 import URLError
 
 import rdflib
 from rdflib.term import URIRef
@@ -118,14 +119,20 @@ def _split_uri(uri, index):
 
 
 def uri_to_graph(uri):
+    '''
+    Request and parse the RDF living at a certain URI.
+
+    :param string uri: :term:`URI` for which we want to parse the RDF.
+    :rtype: rdflib.Graph
+    '''
     graph = rdflib.Graph()
     try:
         graph.parse(uri)
+        if len(graph) == 0:
+            return False
         return graph
-    except:
-        raise ProviderUnavailableException("URI niet bereikbaar: %s" % uri)
-
-
+    except URLError as e:
+        raise ProviderUnavailableException("URI not available: %s" % uri)
 
 
 def text_(s, encoding='latin-1', errors='strict'):
