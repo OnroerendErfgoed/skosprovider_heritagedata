@@ -9,6 +9,21 @@ This library offers an implementation of the
 are used by :term:`EH`, :term:`RCAHMS` and :term:`RCAHMW` in their role as
 curators of heritage.
 
+Installation
+------------
+
+To be able to use this library you need to have a modern version of Python 
+installed. Currently we're supporting versions 2.7, 3.3 and 3.4 of Python.
+
+This easiest way to install this library is through :command:`pip` or 
+:command:`easy install`:
+
+.. code-block:: bash    
+    
+    $ pip install skosprovider_heritagedata
+
+This will download and install :mod:`skosprovider_heritagedata` and a few libraries it 
+depends on. 
 
 .. _supported_thesauri:
 
