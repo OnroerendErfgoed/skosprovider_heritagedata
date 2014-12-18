@@ -5,7 +5,10 @@ Utility functions for :mod:`skosprovider_heritagedata`.
 
 import rdflib
 from rdflib.term import URIRef
-from urllib2 import URLError
+try:
+    from urllib2 import URLError
+except ImportError:
+    from urllib.error import URLError
 from skosprovider.skos import (
     Concept,
     Label,
