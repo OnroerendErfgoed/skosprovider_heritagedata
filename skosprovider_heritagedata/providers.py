@@ -6,6 +6,7 @@ from rdflib.namespace import SKOS
 import requests
 import warnings
 import logging
+from skosprovider.exceptions import ProviderUnavailableException
 from skosprovider.providers import VocabularyProvider
 from skosprovider_heritagedata.utils import (
     heritagedata_to_skos, _split_uri, uri_to_graph)
@@ -241,10 +242,10 @@ class HeritagedataProvider(VocabularyProvider):
         try:
             res = requests.get(request, params=params)
         except:
-            raise ReferenceError("Request kon niet worden uitgevoerd - REQUEST: %s - PARAMS: %s" % (request, params))
+            raise ProviderUnavailableException("Request kon niet worden uitgevoerd - REQUEST: %s - PARAMS: %s" % (request, params))
 
         if res.status_code == 404:
-            raise ReferenceError("Service geeft een 404 (Resource Not Found) - REQUEST: %s - PARAMS: %s" % (request, params))
+            raise ProviderUnavailableException("Service geeft een 404 (Resource Not Found) - REQUEST: %s - PARAMS: %s" % (request, params))
         try:
             res.encoding = 'utf-8'
             result = res.json()
@@ -280,6 +281,6 @@ class HeritagedataProvider(VocabularyProvider):
                     d[uri] = item
             return list(d.values())
         except:
-            raise ValueError("Service response kan nket vertaald worden naar Items - REQUEST: %s - PARAMS: %s" % (request, params))
+            raise ValueError("Service response kan niet vertaald worden naar Items - REQUEST: %s - PARAMS: %s" % (request, params))
 
 

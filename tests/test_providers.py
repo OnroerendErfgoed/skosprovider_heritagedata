@@ -4,6 +4,7 @@
 from skosprovider_heritagedata.providers import (
     HeritagedataProvider
 )
+from skosprovider.exceptions import ProviderUnavailableException
 import unittest
 
 class HeritagedataProviderTests(unittest.TestCase):
@@ -16,13 +17,13 @@ class HeritagedataProviderTests(unittest.TestCase):
         self.assertEqual(provider.service_scheme_uri, 'http://heritagedata.org/live/services')
 
     def test_scheme_uri_not_available(self):
-        self.assertRaises(ReferenceError, HeritagedataProvider, {'id': 'Heritagedata'}, scheme_uri='http://purl.org/heritagedata_not_available/schemes/eh_period')
+        self.assertRaises(ProviderUnavailableException, HeritagedataProvider, {'id': 'Heritagedata'}, scheme_uri='http://purl.org/heritagedata_not_available/schemes/eh_period')
 
         provider = HeritagedataProvider({'id': 'Heritagedata'}, service_scheme_uri='http://heritagedata.org/live/services_not_available/')
         self.assertEqual(provider.base_scheme_uri, 'http://purl.org/heritagedata/schemes')
         self.assertEqual(provider.scheme_id, 'eh_period')
         self.assertEqual(provider.service_scheme_uri, 'http://heritagedata.org/live/services_not_available')
-        self.assertRaises(ReferenceError, provider.find, {'label': 'LOCH', 'type': 'concept'})
+        self.assertRaises(ProviderUnavailableException, provider.find, {'label': 'LOCH', 'type': 'concept'})
 
     def test_get_top_concepts_provider(self):
         provider = HeritagedataProvider({'id': 'Heritagedata'}, scheme_uri='http://purl.org/heritagedata/schemes/eh_period')
@@ -156,12 +157,12 @@ class HeritagedataProviderTests(unittest.TestCase):
 
     def test_get_items_referenceerror(self):
         provider = HeritagedataProvider({'id': 'Heritagedata'},service_scheme_uri='http://heritagedata.org/live/services/')
-        self.assertRaises(ReferenceError, provider._get_items,"invalid",{})
+        self.assertRaises(ProviderUnavailableException, provider._get_items,"invalid",{})
 
     def test_get_items_referenceerror2(self):
         provider = HeritagedataProvider({'id': 'Heritagedata'},service_scheme_uri='http://heritagedata.org/live/services/')
-        self.assertRaises(ReferenceError, provider._get_items,"getConceptLabelMatch",{"fhgfhg"})
+        self.assertRaises(ProviderUnavailableException, provider._get_items,"getConceptLabelMatch",{"fhgfhg"})
 
     def test_get_items_referenceerror3(self):
         provider = HeritagedataProvider({'id': 'Heritagedata'},service_scheme_uri='http://heritagedata_not_existent.org/live/services/')
-        self.assertRaises(ReferenceError, provider._get_items,"getConceptLabelMatch",{'contains': 'VICTORIAN', 'schemeURI': 'http://purl.org/heritagedata/schemes/eh_period'})
+        self.assertRaises(ProviderUnavailableException, provider._get_items,"getConceptLabelMatch",{'contains': 'VICTORIAN', 'schemeURI': 'http://purl.org/heritagedata/schemes/eh_period'})

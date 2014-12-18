@@ -11,6 +11,8 @@ from skosprovider.skos import (
     Note,
     ConceptScheme)
 
+from skosprovider.exceptions import ProviderUnavailableException
+
 import logging
 import sys
 
@@ -121,7 +123,7 @@ def uri_to_graph(uri):
         graph.parse(uri)
         return graph
     except:
-        raise ReferenceError("URI niet bereikbaar: %s" % uri)
+        raise ProviderUnavailableException("URI niet bereikbaar: %s" % uri)
 
 
 
