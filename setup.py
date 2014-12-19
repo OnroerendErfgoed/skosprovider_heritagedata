@@ -40,6 +40,6 @@ setup(
     author='Flanders Heritage Agency',
     author_email='ict@onroerenderfgoed.be',
     url='https://github.com/OnroerendErfgoed/skosprovider_heritagedata',
-    keywords='heritagedata.org skos skosprovider',
+    keywords='heritagedata.org skos skosprovider thesauri vocabularies',
     test_suite='nose.collector'
 )
