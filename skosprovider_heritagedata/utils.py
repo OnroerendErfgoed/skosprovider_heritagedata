@@ -3,22 +3,22 @@
 Utility functions for :mod:`skosprovider_heritagedata`.
 '''
 
-import rdflib
-from rdflib.term import URIRef
+import sys
+
 try:
     from urllib2 import URLError
 except ImportError:
     from urllib.error import URLError
+
 from skosprovider.skos import (
     Concept,
     Label,
     Note,
     ConceptScheme)
-
 from skosprovider.exceptions import ProviderUnavailableException
 
 import logging
-import sys
+log = logging.getLogger(__name__)
 
 PY3 = sys.version_info[0] == 3
 
@@ -27,13 +27,19 @@ if PY3:  # pragma: no cover
 else:  # pragma: no cover
     binary_type = str
 
-log = logging.getLogger(__name__)
-
+import rdflib
+from rdflib.term import URIRef
 from rdflib.namespace import RDF, SKOS, DC, RDFS
 
 PROV = rdflib.Namespace('http://www.w3.org/ns/prov#')
 
 def conceptscheme_from_uri(conceptscheme_uri):
+    '''
+    Read a SKOS Conceptscheme from a :term:`URI`
+
+    :param string conceptscheme_uri: URI of the conceptscheme.
+    :rtype: skosprovider.skos.ConceptScheme
+    '''
     graph = uri_to_graph('%s.rdf' % (conceptscheme_uri))
 
     # get the conceptscheme
@@ -48,6 +54,14 @@ def conceptscheme_from_uri(conceptscheme_uri):
 
 
 def things_from_graph(graph, concept_scheme):
+    '''
+    Read concepts and collections from a graph.
+
+    :param rdflib.Graph graph: Graph to read from.
+    :param skosprovider.skos.ConceptScheme concept_scheme: Conceptscheme the
+        concepts and collections belong to.
+    :rtype: :class:`list`
+    '''
     clist = []
     for sub, pred, obj in graph.triples((None, RDF.type, SKOS.Concept)):
         uri = str(sub)

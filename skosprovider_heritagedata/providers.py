@@ -5,14 +5,18 @@ for http://www.heritagedata.org.
 '''
 
 import requests
+from requests.exceptions import ConnectionError
+
 import warnings
 import logging
-from requests.exceptions import ConnectionError
 log = logging.getLogger(__name__)
+
 from language_tags import tags
 from rdflib.namespace import SKOS
+
 from skosprovider.exceptions import ProviderUnavailableException
 from skosprovider.providers import VocabularyProvider
+
 from skosprovider_heritagedata.utils import (
     _split_uri, 
     uri_to_graph,
