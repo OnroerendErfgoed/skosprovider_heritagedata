@@ -5,10 +5,8 @@ Utility functions for :mod:`skosprovider_heritagedata`.
 
 import rdflib
 from rdflib.term import URIRef
-try:
-    from urllib2 import URLError
-except ImportError:
-    from urllib.error import URLError
+import requests
+
 from skosprovider.skos import (
     Concept,
     Label,
@@ -129,12 +127,16 @@ def uri_to_graph(uri):
     '''
     graph = rdflib.Graph()
     try:
-        graph.parse(uri)
-        if len(graph) == 0:
-            return False
-        return graph
-    except URLError as e:
+        res = requests.get(uri)
+    except requests.ConnectionError as e:
         raise ProviderUnavailableException("URI not available: %s" % uri)
+    if res.status_code == 404:
+        return False
+    graph.parse(data=res.content)
+    #heritagedata.org returns a empy page/graph when a resource does not exists (statsu_code 200). For this reason we return False if the graph is empty
+    if len(graph) == 0:
+        return False
+    return graph
 
 
 def text_(s, encoding='latin-1', errors='strict'):
