@@ -4,7 +4,7 @@
    contain the root `toctree` directive.
 
 Welcome to skosprovider_heritagedata's documentation!
-==============================================
+=====================================================
 
 .. toctree::
    :maxdepth: 2
