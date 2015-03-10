@@ -95,6 +95,16 @@ class HeritagedataProvider(VocabularyProvider):
         with a certain label, with a certain type and for concepts that belong
         to a certain collection.
 
+        .. warning::
+
+            The underlying service returns labels without specifying if they are
+            prefLabels or altLabels. For a certain concept several labels are
+            returned. This method does not return labels, but returns concepts.
+            When multiple labels are detected for a single concept, only one
+            label is attached to this concept. Since no information is present
+            about the type of this label, this can be an altLabel for a concept
+            where a prefLabel exists.
+
         .. code-block:: python
 
             # Find anything that has a label of church.

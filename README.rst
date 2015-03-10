@@ -15,10 +15,10 @@ A skosprovider for the services at `heritagedata.org <http://heritagedata.org>`_
 Building the docs
 -----------------
 
-More information about this library can be found in `docs`. The docs can be 
+More information about this library can be found in `docs`. The docs can be
 built using `Sphinx <http://sphinx-doc.org>`_.
 
-Please make sure you have installed Sphinx in the same environment where 
+Please make sure you have installed Sphinx in the same environment where
 skosprovider_heritagedata is present.
 
 .. code-block:: bash
