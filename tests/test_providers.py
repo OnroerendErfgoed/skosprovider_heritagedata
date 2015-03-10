@@ -89,10 +89,12 @@ class HeritagedataProviderTests(unittest.TestCase):
         self.assertEqual(concept['id'], 'PM')
 
     def test_get_all(self):
-        self.assertFalse(HeritagedataProvider({'id': 'Heritagedata'}, scheme_uri='http://purl.org/heritagedata/schemes/eh_period').get_all())
+        kwargs = {'language': 'nl'}
+        self.assertFalse(HeritagedataProvider({'id': 'Heritagedata'}, scheme_uri='http://purl.org/heritagedata/schemes/eh_period').get_all(**kwargs))
 
     def test_get_top_display(self):
-        top_heritagedata_display = HeritagedataProvider({'id': 'Heritagedata'}, scheme_uri='http://purl.org/heritagedata/schemes/eh_period').get_top_display()
+        kwargs = {'language': 'nl'}
+        top_heritagedata_display = HeritagedataProvider({'id': 'Heritagedata'}, scheme_uri='http://purl.org/heritagedata/schemes/eh_period').get_top_display(**kwargs)
         self.assertIsInstance(top_heritagedata_display, list)
         self.assertGreater(len(top_heritagedata_display), 0)
         keys_first_display = top_heritagedata_display[0].keys()
@@ -101,12 +103,14 @@ class HeritagedataProviderTests(unittest.TestCase):
         self.assertIn('POST MEDIEVAL', [label['label'] for label in top_heritagedata_display])
 
     def test_get_top_concepts(self):
-        top_heritagedata_concepts = HeritagedataProvider({'id': 'Heritagedata'}, scheme_uri='http://purl.org/heritagedata/schemes/eh_period').get_top_concepts()
+        kwargs = {'language': 'nl'}
+        top_heritagedata_concepts = HeritagedataProvider({'id': 'Heritagedata'}, scheme_uri='http://purl.org/heritagedata/schemes/eh_period').get_top_concepts(**kwargs)
         self.assertIsInstance(top_heritagedata_concepts, list)
         self.assertGreater(len(top_heritagedata_concepts), 0)
 
     def test_get_childeren_display(self):
-        childeren_Heritagedata_pm = HeritagedataProvider({'id': 'Heritagedata'}, scheme_uri='http://purl.org/heritagedata/schemes/eh_period').get_children_display('PM')
+        kwargs = {'language': 'nl'}
+        childeren_Heritagedata_pm = HeritagedataProvider({'id': 'Heritagedata'}, scheme_uri='http://purl.org/heritagedata/schemes/eh_period').get_children_display('PM', **kwargs)
         self.assertIsInstance(childeren_Heritagedata_pm, list)
         self.assertGreater(len(childeren_Heritagedata_pm), 0)
         keys_first_display = childeren_Heritagedata_pm[0].keys()
@@ -148,12 +152,29 @@ class HeritagedataProviderTests(unittest.TestCase):
         for res in r:
             self.assertEqual(res['type'], 'concept')
 
-    def test_find_one_keywords(self):
+    def test_find_one_keyword(self):
         r = HeritagedataProvider({'id': 'Heritagedata'}, scheme_uri='http://purl.org/heritagedata/schemes/eh_period').find({'label': 'VICTORIAN', 'type': 'concept'})
         self.assertIsInstance(r, list)
         self.assertGreater(len(r), 0)
         for res in r:
             self.assertEqual(res['type'], 'concept')
+
+    def test_find_one_keyword_language(self):
+        kwargs = {'language': 'nl'}
+        r = HeritagedataProvider({'id': 'Heritagedata'}, scheme_uri='http://purl.org/heritagedata/schemes/eh_period').find({'label': 'VICTORIAN', 'type': 'concept'}, **kwargs)
+        self.assertIsInstance(r, list)
+        self.assertGreater(len(r), 0)
+        for res in r:
+            self.assertEqual(res['type'], 'concept')
+
+    def test_find_kwargs_language(self):
+        kwargs = {'language': 'gd'}
+        provider_gd = HeritagedataProvider({'id': 'Heritagedata', 'default_language': 'en'}, scheme_uri='http://purl.org/heritagedata/schemes/1')
+        result = provider_gd.find({'label': 'LOCH', 'type': 'concept'}, **kwargs)
+        for r in result:
+            self.assertIn("LOCH", r['label'])
+            self.assertTrue(r['lang'] in ('en', 'gd'))
+
 
     def test_get_items(self):
         provider = HeritagedataProvider({'id': 'Heritagedata'},service_scheme_uri='http://heritagedata.org/live/services/')

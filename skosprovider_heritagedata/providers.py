@@ -58,6 +58,8 @@ class HeritagedataProvider(VocabularyProvider):
         super(HeritagedataProvider, self).__init__(metadata, concept_scheme=concept_scheme, **kwargs)
 
     def _get_language(self, **kwargs):
+        if 'language' in kwargs:
+            return kwargs['language']
         return self.metadata['default_language']
 
     def get_by_id(self, id):
@@ -87,7 +89,7 @@ class HeritagedataProvider(VocabularyProvider):
         id = _split_uri(uri, 1)
         return self.get_by_id(id)
 
-    def find(self, query):
+    def find(self, query, **kwargs):
         '''Find concepts that match a certain query.
 
         Currently query is expected to be a dict, so that complex queries can
@@ -173,9 +175,9 @@ class HeritagedataProvider(VocabularyProvider):
             warnings.warn("This provider doesn't support collections at the moment of implementation because Heritagedata doesn't use SKOS:Collection.", UserWarning)
             raise ValueError('You are searching for items in an unexisting collection.')
         params = {'schemeURI': self.scheme_uri, 'contains': label}
-        return self._get_items("getConceptLabelMatch", params)
+        return self._get_items("getConceptLabelMatch", params, **kwargs)
 
-    def get_all(self):
+    def get_all(self, **kwargs):
         """
         Not supported: This provider does not support this. The amount of results is too large
         """
@@ -185,29 +187,29 @@ class HeritagedataProvider(VocabularyProvider):
         )
         return False
 
-    def get_top_concepts(self):
+    def get_top_concepts(self, **kwargs):
         """  Returns all concepts that form the top-level of a display hierarchy.
 
         :return: A :class:`lst` of concepts.
         """
         #Collections are not used in Heritagedata so get_top_concepts() equals get_top_display()
-        return self.get_top_display()
+        return self.get_top_display(**kwargs)
 
-    def get_top_display(self):
+    def get_top_display(self, **kwargs):
         """  Returns all concepts or collections that form the top-level of a display hierarchy.
         :return: A :class:`lst` of concepts and collections.
         """
         params = {'schemeURI': self.scheme_uri}
-        return self._get_items("getTopConceptsForScheme", params)
+        return self._get_items("getTopConceptsForScheme", params, **kwargs)
 
-    def get_children_display(self, id):
+    def get_children_display(self, id, **kwargs):
         """ Return a list of concepts or collections that should be displayed under this concept or collection.
 
         :param str id: A concept or collection id.
         :returns: A :class:`lst` of concepts and collections.
         """
         params = {'conceptURI': self.scheme_uri + "/concepts/" + id}
-        return self._get_items("getConceptRelations", params)
+        return self._get_items("getConceptRelations", params, **kwargs)
 
     def expand(self, id):
         """ Expand a concept or collection to all it's narrower concepts.
@@ -242,7 +244,7 @@ class HeritagedataProvider(VocabularyProvider):
                         answer.extend(child_list)
         return answer
 
-    def _get_items(self, service, params):
+    def _get_items(self, service, params, **kwargs):
         # send request to Heritagedata
         """ Returns the results of a service method to a :class:`lst` of concepts (and collections).
             The return :class:`lst`  can be empty.
@@ -287,11 +289,11 @@ class HeritagedataProvider(VocabularyProvider):
                 }
             if uri not in d:
                 d[uri] = item
-            if tags.tag(d[uri]['lang']).format == tags.tag(self._get_language()).format:
+            if tags.tag(d[uri]['lang']).format == tags.tag(self._get_language(**kwargs)).format:
                 pass
-            elif tags.tag(item['lang']).format == tags.tag(self._get_language()).format:
+            elif tags.tag(item['lang']).format == tags.tag(self._get_language(**kwargs)).format:
                 d[uri] = item
-            elif tags.tag(item['lang']).language and (tags.tag(item['lang']).language.format == tags.tag(self._get_language()).language.format):
+            elif tags.tag(item['lang']).language and (tags.tag(item['lang']).language.format == tags.tag(self._get_language(**kwargs)).language.format):
                 d[uri] = item
             elif tags.tag(item['lang']).format == 'en':
                 d[uri] = item
