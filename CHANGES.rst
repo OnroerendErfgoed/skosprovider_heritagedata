@@ -3,7 +3,7 @@
 
 - Fix an issue where calls that include a `language` parameter would fail because
   certain methods were not expecting extra keyword parameters. (#12)
-- Some documentation clarifications.
+- Some documentation clarifications. (#11)
 
 0.2.0 (2014-12-19)
 ------------------
