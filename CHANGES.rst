@@ -1,4 +1,4 @@
-0.2.1 (2015-03-??)
+0.2.1 (2015-03-10)
 ------------------
 
 - Fix an issue where calls that include a `language` parameter would fail because
