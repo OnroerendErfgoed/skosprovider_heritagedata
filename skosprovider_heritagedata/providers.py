@@ -65,7 +65,7 @@ class HeritagedataProvider(VocabularyProvider):
 
         :param (str) id: integer id of the :class:`skosprovider.skos.Concept` or :class:`skosprovider.skos.Concept`
         :return: corresponding :class:`skosprovider.skos.Concept` or :class:`skosprovider.skos.Concept`.
-            Returns None if non-existing id
+            Returns False if non-existing id
         """
         graph = uri_to_graph('%s/%s/%s.rdf' % (self.scheme_uri, "concepts", id))
         if graph is False:
@@ -73,7 +73,7 @@ class HeritagedataProvider(VocabularyProvider):
         # get the concept
         things = things_from_graph(graph, self.concept_scheme)
         if len(things) == 0:
-            return None
+            return False
         c = things[0]
         return c
 
@@ -82,7 +82,7 @@ class HeritagedataProvider(VocabularyProvider):
 
         :param (str) uri: string uri of the :class:`skosprovider.skos.Concept` or :class:`skosprovider.skos.Concept`
         :return: corresponding :class:`skosprovider.skos.Concept` or :class:`skosprovider.skos.Concept`.
-            Returns None if non-existing id
+            Returns False if non-existing id
         """
         id = _split_uri(uri, 1)
         return self.get_by_id(id)
