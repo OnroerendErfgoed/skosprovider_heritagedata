@@ -1,3 +1,8 @@
+0.3.0 (2016-??-??)
+------------------
+
+- Compatibile with `SkosProvider 0.6.0 <http://skosprovider.readthedocs.org/en/0.6.0>`_.
+
 0.2.1 (2015-03-10)
 ------------------
 
