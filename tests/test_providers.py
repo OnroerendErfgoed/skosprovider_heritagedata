@@ -9,7 +9,6 @@ import unittest
 
 class HeritagedataProviderTests(unittest.TestCase):
 
-
     def test_default_provider(self):
         provider = HeritagedataProvider({'id': 'Heritagedata'},service_scheme_uri='http://heritagedata.org/live/services/')
         self.assertEqual(provider.base_scheme_uri, 'http://purl.org/heritagedata/schemes')
@@ -102,11 +101,38 @@ class HeritagedataProviderTests(unittest.TestCase):
             self.assertIn(key, keys_first_display)
         self.assertIn('POST MEDIEVAL', [label['label'] for label in top_heritagedata_display])
 
+    def test_get_top_display_sort_sort(self):
+        prov = HeritagedataProvider(
+            {'id': 'Heritagedata'},
+            scheme_uri='http://purl.org/heritagedata/schemes/eh_period'
+        )
+        sorted_by_id = prov.get_top_display(sort='id')
+        sorted_by_uri = prov.get_top_display(sort='uri', sort_order='desc')
+        assert len(sorted_by_id) > 1
+        assert len(sorted_by_id) == len(sorted_by_uri)
+        assert [c['id'] for c in sorted_by_id] != [c['id'] for c in sorted_by_uri]
+
     def test_get_top_concepts(self):
         kwargs = {'language': 'nl'}
         top_heritagedata_concepts = HeritagedataProvider({'id': 'Heritagedata'}, scheme_uri='http://purl.org/heritagedata/schemes/eh_period').get_top_concepts(**kwargs)
         self.assertIsInstance(top_heritagedata_concepts, list)
         self.assertGreater(len(top_heritagedata_concepts), 0)
+
+    def test_get_top_concepts_sort(self):
+        prov = HeritagedataProvider(
+            {'id': 'Heritagedata'},
+            scheme_uri='http://purl.org/heritagedata/schemes/eh_period'
+        )
+        not_sorted = prov.get_top_concepts()
+        sorted_by_id = prov.get_top_concepts(sort='id')
+        assert [c['id'] for c in not_sorted] == [c['id'] for c in sorted_by_id]
+        sorted_by_uri = prov.get_top_concepts(sort='uri')
+        assert len(sorted_by_id) == 8
+        assert len(sorted_by_id) == len(sorted_by_uri)
+        assert [c['id'] for c in sorted_by_id] == [c['id'] for c in sorted_by_uri]
+        sorted_by_label = prov.get_top_concepts(sort='label')
+        assert len(sorted_by_id) == len(sorted_by_label)
+        assert [c['id'] for c in sorted_by_id] == [c['id'] for c in sorted_by_label]
 
     def test_get_childeren_display(self):
         kwargs = {'language': 'nl'}
@@ -117,6 +143,21 @@ class HeritagedataProviderTests(unittest.TestCase):
         for key in ['id', 'type', 'label', 'uri']:
             self.assertIn(key, keys_first_display)
         self.assertIn("TUDOR", [label['label'] for label in childeren_Heritagedata_pm])
+
+    def test_get_children_display_sort(self):
+        prov = HeritagedataProvider(
+            {'id': 'Heritagedata'},
+            scheme_uri='http://purl.org/heritagedata/schemes/eh_period'
+        )
+        not_sorted = prov.get_children_display('PM')
+        sorted_by_id = prov.get_children_display('PM', sort='id')
+        assert [c['id'] for c in not_sorted] == [c['id'] for c in sorted_by_id]
+        assert len(sorted_by_id) == len(not_sorted)
+        sorted_by_label = prov.get_children_display('PM', sort='label')
+        assert len(sorted_by_id) == len(sorted_by_label)
+        assert [c['id'] for c in sorted_by_id] == [c['id'] for c in sorted_by_label]
+        sorted_by_label_desc = prov.get_children_display('PM', sort='label', sort_order='desc')
+        assert [c['id'] for c in sorted_by_label] != [c['id'] for c in sorted_by_label_desc]
 
     def test_expand(self):
         all_childeren_pm = HeritagedataProvider({'id': 'Heritagedata'}, scheme_uri='http://purl.org/heritagedata/schemes/eh_period').expand('PM')
@@ -175,6 +216,21 @@ class HeritagedataProviderTests(unittest.TestCase):
             self.assertIn("LOCH", r['label'])
             self.assertTrue(r['lang'] in ('en', 'gd'))
 
+    def test_find_sort(self):
+        prov = HeritagedataProvider(
+            {'id': 'Heritagedata'},
+            scheme_uri='http://purl.org/heritagedata/schemes/eh_period'
+        )
+        sorted_by_id = prov.find({'label': 'century', 'sort': 'id'})
+        sorted_by_uri = prov.find({'label': 'century', 'sort': 'uri'})
+        assert len(sorted_by_id) > 1
+        assert len(sorted_by_id) == len(sorted_by_uri)
+        assert [c for c in sorted_by_id] == [c for c in sorted_by_uri]
+        sorted_by_label = prov.find({'label': 'century', 'sort': 'label'})
+        assert len(sorted_by_id) == len(sorted_by_label)
+        assert [c for c in sorted_by_id] == [c for c in sorted_by_label]
+        sorted_by_sortlabel = prov.find({'label': 'century', 'sort': 'sortlabel'})
+        assert sorted_by_sortlabel == sorted_by_label
 
     def test_get_items(self):
         provider = HeritagedataProvider({'id': 'Heritagedata'},service_scheme_uri='http://heritagedata.org/live/services/')

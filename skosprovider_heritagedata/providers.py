@@ -175,7 +175,11 @@ class HeritagedataProvider(VocabularyProvider):
             warnings.warn("This provider doesn't support collections at the moment of implementation because Heritagedata doesn't use SKOS:Collection.", UserWarning)
             raise ValueError('You are searching for items in an unexisting collection.')
         params = {'schemeURI': self.scheme_uri, 'contains': label}
-        return self._get_items("getConceptLabelMatch", params, **kwargs)
+        ret = self._get_items("getConceptLabelMatch", params, **kwargs)
+        language = self._get_language(**kwargs)
+        sort = self._get_sort(**kwargs)
+        sort_order = self._get_sort_order(**kwargs)
+        return self._sort(ret, sort, language, sort_order == 'desc')
 
     def get_all(self, **kwargs):
         """
@@ -200,7 +204,11 @@ class HeritagedataProvider(VocabularyProvider):
         :return: A :class:`lst` of concepts and collections.
         """
         params = {'schemeURI': self.scheme_uri}
-        return self._get_items("getTopConceptsForScheme", params, **kwargs)
+        ret = self._get_items("getTopConceptsForScheme", params, **kwargs)
+        language = self._get_language(**kwargs)
+        sort = self._get_sort(**kwargs)
+        sort_order = self._get_sort_order(**kwargs)
+        return self._sort(ret, sort, language, sort_order == 'desc')
 
     def get_children_display(self, id, **kwargs):
         """ Return a list of concepts or collections that should be displayed under this concept or collection.
@@ -209,7 +217,11 @@ class HeritagedataProvider(VocabularyProvider):
         :returns: A :class:`lst` of concepts and collections.
         """
         params = {'conceptURI': self.scheme_uri + "/concepts/" + id}
-        return self._get_items("getConceptRelations", params, **kwargs)
+        ret = self._get_items("getConceptRelations", params, **kwargs)
+        language = self._get_language(**kwargs)
+        sort = self._get_sort(**kwargs)
+        sort_order = self._get_sort_order(**kwargs)
+        return self._sort(ret, sort, language, sort_order == 'desc')
 
     def expand(self, id):
         """ Expand a concept or collection to all it's narrower concepts.
@@ -298,3 +310,12 @@ class HeritagedataProvider(VocabularyProvider):
             elif tags.tag(item['lang']).format == 'en':
                 d[uri] = item
         return list(d.values())
+
+    def _sort(self, items, sort, language='en', reverse=False):
+        if sort is None:
+            sort = 'id'
+        if sort == 'sortlabel':
+            sort='label'
+        items.sort(key=lambda item: item[sort], reverse=reverse)
+        return items
+
