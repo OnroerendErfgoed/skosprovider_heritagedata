@@ -151,7 +151,6 @@ def uri_to_graph(uri):
     '''
     graph = rdflib.Graph()
     try:
-        log.debug('Getting URI %s' % uri)
         res = requests.get(uri)
     except requests.ConnectionError as e:
         raise ProviderUnavailableException("URI not available: %s" % uri)
@@ -170,5 +169,3 @@ def text_(s, encoding='latin-1', errors='strict'):
     if isinstance(s, binary_type):
         return s.decode(encoding, errors)
     return s
-
-
