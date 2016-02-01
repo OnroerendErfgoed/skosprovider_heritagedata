@@ -47,7 +47,7 @@ def conceptscheme_from_uri(conceptscheme_uri):
             labels.append(label)
         for s, p, o in graph.triples((URIRef(conceptscheme_uri), DCTERMS.description, None)):
             note = Note(o.toPython(), "scopeNote", 'en')
-            notes.append(label)
+            notes.append(note)
 
     # get the conceptscheme
     conceptscheme = ConceptScheme(
@@ -148,6 +148,7 @@ def uri_to_graph(uri):
     '''
     graph = rdflib.Graph()
     try:
+        log.debug('Getting URI %s' % uri)
         res = requests.get(uri)
     except requests.ConnectionError as e:
         raise ProviderUnavailableException("URI not available: %s" % uri)
