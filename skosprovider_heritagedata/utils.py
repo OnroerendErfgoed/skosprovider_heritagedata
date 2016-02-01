@@ -70,14 +70,17 @@ def things_from_graph(graph, concept_scheme):
     clist = []
     for sub, pred, obj in graph.triples((None, RDF.type, SKOS.Concept)):
         uri = str(sub)
-        con = Concept(_split_uri(uri, 1), uri=uri)
-        con.broader = _create_from_subject_predicate(graph, sub, SKOS.broader)
-        con.narrower = _create_from_subject_predicate(graph, sub, SKOS.narrower)
-        con.related = _create_from_subject_predicate(graph, sub, SKOS.related)
-        con.labels = _create_from_subject_typelist(graph, sub, Label.valid_types)
-        con.notes = _create_from_subject_typelist(graph, sub, Note.valid_types)
-        con.subordinate_arrays = []
-        con.concept_scheme = concept_scheme
+        con = Concept(
+            id=_split_uri(uri, 1),
+            uri=uri,
+            concept_scheme = concept_scheme,
+            labels = _create_from_subject_typelist(graph, sub, Label.valid_types),
+            notes = _create_from_subject_typelist(graph, sub, Note.valid_types),
+            broader = _create_from_subject_predicate(graph, sub, SKOS.broader),
+            narrower = _create_from_subject_predicate(graph, sub, SKOS.narrower),
+            related = _create_from_subject_predicate(graph, sub, SKOS.related),
+            subordinate_arrays = []
+        )
         clist.append(con)
 
         # at this moment, Heritagedata does not support SKOS.Collection
