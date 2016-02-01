@@ -25,7 +25,7 @@ else:  # pragma: no cover
 
 import rdflib
 from rdflib.term import URIRef
-from rdflib.namespace import RDF, SKOS, DC, RDFS
+from rdflib.namespace import RDF, SKOS, DC, DCTERMS, RDFS
 
 PROV = rdflib.Namespace('http://www.w3.org/ns/prov#')
 
@@ -38,14 +38,23 @@ def conceptscheme_from_uri(conceptscheme_uri):
     '''
     graph = uri_to_graph('%s.rdf' % (conceptscheme_uri))
 
-    # get the conceptscheme
-    conceptscheme = ConceptScheme(conceptscheme_uri)
-    conceptscheme.notes = []
-    conceptscheme.labels = []
+    notes = []
+    labels = []
+
     if graph is not False:
         for s, p, o in graph.triples((URIRef(conceptscheme_uri), RDFS.label, None)):
             label = Label(o.toPython(), "prefLabel", 'en')
-            conceptscheme.labels.append(label)
+            labels.append(label)
+        for s, p, o in graph.triples((URIRef(conceptscheme_uri), DCTERMS.description, None)):
+            note = Note(o.toPython(), "scopeNote", 'en')
+            notes.append(label)
+
+    # get the conceptscheme
+    conceptscheme = ConceptScheme(
+        conceptscheme_uri,
+        labels=labels,
+        notes=notes
+    )
     return conceptscheme
 
 
