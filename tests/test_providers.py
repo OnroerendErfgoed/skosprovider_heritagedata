@@ -59,8 +59,8 @@ class HeritagedataProviderTests(unittest.TestCase):
         self.assertIsInstance(concept['labels'], list)
 
         preflabels = [{'en': 'POST MEDIEVAL'}]
-        preflabels_conc = [{label['language']: label['label']} for label in concept['labels']
-                           if label['type'] == 'prefLabel']
+        preflabels_conc = [{label.language: label.label} for label in concept['labels']
+                           if label.type == 'prefLabel']
         self.assertGreater(len(preflabels_conc), 0)
         for label in preflabels:
             self.assertIn(label, preflabels_conc)
