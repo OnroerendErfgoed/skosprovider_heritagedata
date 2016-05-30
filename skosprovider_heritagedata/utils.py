@@ -154,7 +154,7 @@ def uri_to_graph(uri, **kwargs):
     s = kwargs.get('session', requests.Session())
     graph = rdflib.Graph()
     try:
-        res = requests.get(uri)
+        res = s.get(uri)
     except requests.ConnectionError as e:
         raise ProviderUnavailableException("URI not available: %s" % uri)
     if res.status_code == 404:
