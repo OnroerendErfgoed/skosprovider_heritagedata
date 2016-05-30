@@ -13,6 +13,7 @@ from skosprovider.exceptions import ProviderUnavailableException
 
 import logging
 import sys
+import requests
 
 log = logging.getLogger(__name__)
 
@@ -29,14 +30,15 @@ from rdflib.namespace import RDF, SKOS, DC, DCTERMS, RDFS
 
 PROV = rdflib.Namespace('http://www.w3.org/ns/prov#')
 
-def conceptscheme_from_uri(conceptscheme_uri):
+def conceptscheme_from_uri(conceptscheme_uri, **kwargs):
     '''
     Read a SKOS Conceptscheme from a :term:`URI`
 
     :param string conceptscheme_uri: URI of the conceptscheme.
     :rtype: skosprovider.skos.ConceptScheme
     '''
-    graph = uri_to_graph('%s.rdf' % (conceptscheme_uri))
+    s = kwargs.get('session', requests.Session())
+    graph = uri_to_graph('%s.rdf' % (conceptscheme_uri), session=s)
 
     notes = []
     labels = []
@@ -142,13 +144,14 @@ def _split_uri(uri, index):
     return uri.strip('/').rsplit('/', 1)[index]
 
 
-def uri_to_graph(uri):
+def uri_to_graph(uri, **kwargs):
     '''
     :param string uri: :term:`URI` where the RDF data can be found.
     :rtype: rdflib.Graph
     :raises skosprovider.exceptions.ProviderUnavailableException: if the 
         heritagedata.org services are down
     '''
+    s = kwargs.get('session', requests.Session())
     graph = rdflib.Graph()
     try:
         res = requests.get(uri)

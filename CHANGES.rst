@@ -2,6 +2,7 @@
 ------------------
 
 - Compatibile with `SkosProvider 0.6.0 <http://skosprovider.readthedocs.org/en/0.6.0>`_.
+- Allow passing a custom requests Session to a provider. (#14)
 
 0.2.1 (2015-03-10)
 ------------------

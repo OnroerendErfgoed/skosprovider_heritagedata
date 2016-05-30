@@ -54,7 +54,11 @@ class HeritagedataProvider(VocabularyProvider):
             self.service_scheme_uri = kwargs['service_scheme_uri'].strip('/')
         else:
             self.service_scheme_uri = "http://heritagedata.org/live/services"
-        concept_scheme = conceptscheme_from_uri(self.scheme_uri)
+        self.session = kwargs.get('session', requests.Session())
+        concept_scheme = conceptscheme_from_uri(
+            self.scheme_uri,
+            session=self.session
+        )
         super(HeritagedataProvider, self).__init__(metadata, concept_scheme=concept_scheme, **kwargs)
 
     def _get_language(self, **kwargs):
@@ -69,7 +73,10 @@ class HeritagedataProvider(VocabularyProvider):
         :return: corresponding :class:`skosprovider.skos.Concept` or :class:`skosprovider.skos.Concept`.
             Returns False if non-existing id
         """
-        graph = uri_to_graph('%s/%s/%s.rdf' % (self.scheme_uri, "concepts", id))
+        graph = uri_to_graph(
+            '%s/%s/%s.rdf' % (self.scheme_uri, "concepts", id),
+            session=self.session
+        )
         if graph is False:
             return False
         # get the concept
@@ -242,7 +249,7 @@ class HeritagedataProvider(VocabularyProvider):
     def _get_children(self, id, all=False):
         #If all=True this method works recursive
         request = self.service_scheme_uri + "/getConceptRelations"
-        res = requests.get(request, params={'conceptURI': self.scheme_uri + "/concepts/" + id})
+        res = self.session.get(request, params={'conceptURI': self.scheme_uri + "/concepts/" + id})
         res.encoding = 'utf-8'
         result = res.json()
         answer = []
@@ -272,7 +279,7 @@ class HeritagedataProvider(VocabularyProvider):
 
         request = self.service_scheme_uri + "/" + service
         try:
-            res = requests.get(request, params=params)
+            res = self.session.get(request, params=params)
         except ConnectionError as e:
             raise ProviderUnavailableException("Request could not be executed - Request: %s - Params: %s" % (request, params))
         if res.status_code == 404:

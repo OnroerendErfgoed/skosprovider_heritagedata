@@ -9,6 +9,16 @@ import unittest
 
 class HeritagedataProviderTests(unittest.TestCase):
 
+    def test_set_custom_session(self):
+        import requests
+        sess = requests.Session()
+        provider = HeritagedataProvider(
+            {'id': 'Heritagedata'},
+            service_scheme_uri='http://heritagedata.org/live/services/',
+            session=sess
+        )
+        self.assertEqual(sess, provider.session)
+
     def test_default_provider(self):
         provider = HeritagedataProvider({'id': 'Heritagedata'},service_scheme_uri='http://heritagedata.org/live/services/')
         self.assertEqual(provider.base_scheme_uri, 'http://purl.org/heritagedata/schemes')
