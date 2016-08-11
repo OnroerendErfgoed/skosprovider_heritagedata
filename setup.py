@@ -13,14 +13,14 @@ packages = [
 ]
 
 requires = [
-    'skosprovider>=0.5.0',
+    'skosprovider>=0.6.0',
     'requests',
     'rdflib'
 ]
 
 setup(
     name='skosprovider_heritagedata',
-    version='0.3.0.dev0',
+    version='0.3.0',
     description='Skosprovider implementation of the heritagedata.org Vocabularies',
     long_description=README,
     packages=packages,
