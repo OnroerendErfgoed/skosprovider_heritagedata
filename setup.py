@@ -20,7 +20,7 @@ requires = [
 
 setup(
     name='skosprovider_heritagedata',
-    version='0.3.0',
+    version='0.3.1',
     description='Skosprovider implementation of the heritagedata.org Vocabularies',
     long_description=README,
     packages=packages,
@@ -37,6 +37,7 @@ setup(
         'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
     ],
     author='Flanders Heritage Agency',
     author_email='ict@onroerenderfgoed.be',
