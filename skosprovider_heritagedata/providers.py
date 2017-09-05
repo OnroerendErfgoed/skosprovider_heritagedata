@@ -42,6 +42,9 @@ class HeritagedataProvider(VocabularyProvider):
         """
         if not 'default_language' in metadata:
             metadata['default_language'] = 'en'
+        if not 'subject' in metadata:
+            metadata['subject'] = []
+        self.metadata = metadata
         if 'scheme_uri' in kwargs:
             self.base_scheme_uri = _split_uri(kwargs['scheme_uri'], 0)
             self.scheme_id = _split_uri(kwargs['scheme_uri'], 1)
@@ -55,11 +58,17 @@ class HeritagedataProvider(VocabularyProvider):
         else:
             self.service_scheme_uri = "http://heritagedata.org/live/services"
         self.session = kwargs.get('session', requests.Session())
-        concept_scheme = conceptscheme_from_uri(
+
+    @property
+    def concept_scheme(self):
+        return self._get_concept_scheme()
+
+    def _get_concept_scheme(self):
+        return conceptscheme_from_uri(
             self.scheme_uri,
             session=self.session
         )
-        super(HeritagedataProvider, self).__init__(metadata, concept_scheme=concept_scheme, **kwargs)
+        
 
     def _get_language(self, **kwargs):
         if 'language' in kwargs:
