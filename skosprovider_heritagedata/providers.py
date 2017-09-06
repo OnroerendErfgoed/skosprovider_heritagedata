@@ -68,7 +68,6 @@ class HeritagedataProvider(VocabularyProvider):
             self.scheme_uri,
             session=self.session
         )
-        
 
     def _get_language(self, **kwargs):
         if 'language' in kwargs:
