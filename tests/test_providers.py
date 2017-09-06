@@ -26,8 +26,6 @@ class HeritagedataProviderTests(unittest.TestCase):
         self.assertEqual(provider.service_scheme_uri, 'http://heritagedata.org/live/services')
 
     def test_scheme_uri_not_available(self):
-        self.assertRaises(ProviderUnavailableException, HeritagedataProvider, {'id': 'Heritagedata'}, scheme_uri='http://purl_not_available.org/heritagedata/schemes/eh_period')
-
         provider = HeritagedataProvider({'id': 'Heritagedata'}, service_scheme_uri='http://heritagedata.org/live/services_not_available/')
         self.assertEqual(provider.base_scheme_uri, 'http://purl.org/heritagedata/schemes')
         self.assertEqual(provider.scheme_id, 'eh_period')

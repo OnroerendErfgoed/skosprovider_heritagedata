@@ -1,3 +1,9 @@
+0.3.1 (2017-09-06)
+------------------
+
+- Stop loading the conceptscheme while initialising the provider.
+- Add support for Python 3.6
+
 0.3.0 (2016-08-11)
 ------------------
 
