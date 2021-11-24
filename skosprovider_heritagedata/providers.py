@@ -284,7 +284,7 @@ class HeritagedataProvider(VocabularyProvider):
 
         request = self.service_scheme_uri + "/" + service
         try:
-            res = self.session.get(request, params=params)
+            res = self.session.get(request, params=params, allow_redirects=True)
         except ConnectionError as e:
             raise ProviderUnavailableException(f"Request could not be executed - Request: {request} - Params: {params}")
         if res.status_code == 404:

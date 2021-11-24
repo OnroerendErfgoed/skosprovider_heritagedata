@@ -90,7 +90,7 @@ def things_from_graph(graph, concept_scheme):
 def _create_from_subject_typelist(graph, subject, typelist):
     list = []
     for p in typelist:
-        term = SKOS.term(p)
+        term = SKOS._NS.term(p)
         list.extend(_create_from_subject_predicate(graph, subject, term))
     return list
 
@@ -149,8 +149,10 @@ def uri_to_graph(uri, **kwargs):
         raise ProviderUnavailableException("URI not available: %s" % uri)
     if res.status_code == 404:
         return False
-    graph.parse(data=res.content)
-    #heritagedata.org returns a empy page/graph when a resource does not exists (statsu_code 200). For this reason we return False if the graph is empty
+    content_type = res.headers['Content-Type'].split(';')[0]
+    graph.parse(data=res.content, format=content_type)
+    # heritagedata.org returns a empy page/graph when a resource does not exists
+    # (statsu_code 200). For this reason we return False if the graph is empty
     if len(graph) == 0:
         return False
     return graph
