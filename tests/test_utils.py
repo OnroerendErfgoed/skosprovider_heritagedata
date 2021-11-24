@@ -1,9 +1,10 @@
-# -*- coding: utf-8 -*-
 import unittest
+
 from rdflib import Graph
 from skosprovider.exceptions import ProviderUnavailableException
 
-from skosprovider_heritagedata.utils import text_, uri_to_graph
+from skosprovider_heritagedata.utils import text_
+from skosprovider_heritagedata.utils import uri_to_graph
 
 
 class UtilsTests(unittest.TestCase):
@@ -16,15 +17,15 @@ class UtilsTests(unittest.TestCase):
 
     def test_text(self):
         res = text_(b'test123')
-        self.assertEqual(u'test123', res)
+        self.assertEqual('test123', res)
 
     def test_text_unicode(self):
-        res = text_(u'test123')
-        self.assertEqual(u'test123', res)
+        res = text_('test123')
+        self.assertEqual('test123', res)
 
     def test_text_utf8(self):
         res = text_(b'LaPe\xc3\xb1a', 'utf-8')
-        self.assertEqual(u'LaPe\xf1a', res)
+        self.assertEqual('LaPe\xf1a', res)
 
     def test_uri_to_graph(self):
         res = uri_to_graph('http://purl.org/heritagedata/schemes/eh_period.rdf')

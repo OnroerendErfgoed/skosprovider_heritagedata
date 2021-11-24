@@ -1,33 +1,23 @@
-# -*- coding: utf-8 -*-
 '''
 Utility functions for :mod:`skosprovider_heritagedata`.
 '''
 
-import requests
-from skosprovider.skos import (
-    Concept,
-    Label,
-    Note,
-    ConceptScheme)
-from skosprovider.exceptions import ProviderUnavailableException
-
 import logging
-import sys
-import requests
-
-log = logging.getLogger(__name__)
-
-PY3 = sys.version_info[0] == 3
-
-if PY3:  # pragma: no cover
-    binary_type = bytes
-else:  # pragma: no cover
-    binary_type = str
 
 import rdflib
+import requests
+from rdflib.namespace import DCTERMS
+from rdflib.namespace import RDF
+from rdflib.namespace import RDFS
+from rdflib.namespace import SKOS
 from rdflib.term import URIRef
-from rdflib.namespace import RDF, SKOS, DC, DCTERMS, RDFS
+from skosprovider.exceptions import ProviderUnavailableException
+from skosprovider.skos import Concept
+from skosprovider.skos import ConceptScheme
+from skosprovider.skos import Label
+from skosprovider.skos import Note
 
+log = logging.getLogger(__name__)
 PROV = rdflib.Namespace('http://www.w3.org/ns/prov#')
 
 def conceptscheme_from_uri(conceptscheme_uri, **kwargs):
@@ -167,8 +157,8 @@ def uri_to_graph(uri, **kwargs):
 
 
 def text_(s, encoding='latin-1', errors='strict'):
-    """ If ``s`` is an instance of ``binary_type``, return
+    """ If ``s`` is an instance of ``bytes``, return
     ``s.decode(encoding, errors)``, otherwise return ``s``"""
-    if isinstance(s, binary_type):
+    if isinstance(s, bytes):
         return s.decode(encoding, errors)
     return s
