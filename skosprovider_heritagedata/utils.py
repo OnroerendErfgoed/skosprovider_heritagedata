@@ -60,13 +60,15 @@ def things_from_graph(graph, concept_scheme):
     :rtype: :class:`list`
     '''
     clist = []
+    valid_label_types = Label.valid_types[:]
+    valid_label_types.remove('sortLabel')
     for sub, pred, obj in graph.triples((None, RDF.type, SKOS.Concept)):
         uri = str(sub)
         con = Concept(
             id=_split_uri(uri, 1),
             uri=uri,
             concept_scheme = concept_scheme,
-            labels = _create_from_subject_typelist(graph, sub, Label.valid_types),
+            labels = _create_from_subject_typelist(graph, sub, valid_label_types),
             notes = _create_from_subject_typelist(graph, sub, Note.valid_types),
             broader = _create_from_subject_predicate(graph, sub, SKOS.broader),
             narrower = _create_from_subject_predicate(graph, sub, SKOS.narrower),
