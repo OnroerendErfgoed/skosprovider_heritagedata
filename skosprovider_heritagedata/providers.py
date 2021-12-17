@@ -1,28 +1,25 @@
-# -*- coding: utf-8 -*-
 '''
 This module implements a :class:`skosprovider.providers.VocabularyProvider`
 for http://www.heritagedata.org.
 '''
 
-import requests
-from requests.exceptions import ConnectionError
-
-import warnings
 import logging
-log = logging.getLogger(__name__)
+import warnings
 
+import requests
 from language_tags import tags
 from rdflib.namespace import SKOS
-
+from requests.exceptions import ConnectionError
 from skosprovider.exceptions import ProviderUnavailableException
 from skosprovider.providers import VocabularyProvider
 
-from skosprovider_heritagedata.utils import (
-    _split_uri, 
-    uri_to_graph,
-    conceptscheme_from_uri,
-    things_from_graph
-)
+from skosprovider_heritagedata.utils import _split_uri
+from skosprovider_heritagedata.utils import conceptscheme_from_uri
+from skosprovider_heritagedata.utils import things_from_graph
+from skosprovider_heritagedata.utils import uri_to_graph
+
+log = logging.getLogger(__name__)
+
 
 class HeritagedataProvider(VocabularyProvider):
     """A provider that can work with the Heritagedata services of
@@ -82,7 +79,7 @@ class HeritagedataProvider(VocabularyProvider):
             Returns False if non-existing id
         """
         graph = uri_to_graph(
-            '%s/%s/%s.rdf' % (self.scheme_uri, "concepts", id),
+            '{}/{}/{}.rdf'.format(self.scheme_uri, "concepts", id),
             session=self.session
         )
         if graph is False:
@@ -218,7 +215,7 @@ class HeritagedataProvider(VocabularyProvider):
         """  Returns all concepts or collections that form the top-level of a display hierarchy.
         :return: A :class:`lst` of concepts and collections.
         """
-        params = {'schemeURI': self.scheme_uri}
+        params = {'schemeURI': self.scheme_uri, 'alias': True}
         ret = self._get_items("getTopConceptsForScheme", params, **kwargs)
         language = self._get_language(**kwargs)
         sort = self._get_sort(**kwargs)
@@ -231,7 +228,7 @@ class HeritagedataProvider(VocabularyProvider):
         :param str id: A concept or collection id.
         :returns: A :class:`lst` of concepts and collections.
         """
-        params = {'conceptURI': self.scheme_uri + "/concepts/" + id}
+        params = {'conceptURI': self.scheme_uri + "/concepts/" + id, 'alias': True}
         ret = self._get_items("getConceptRelations", params, **kwargs)
         language = self._get_language(**kwargs)
         sort = self._get_sort(**kwargs)
@@ -289,9 +286,9 @@ class HeritagedataProvider(VocabularyProvider):
         try:
             res = self.session.get(request, params=params)
         except ConnectionError as e:
-            raise ProviderUnavailableException("Request could not be executed - Request: %s - Params: %s" % (request, params))
+            raise ProviderUnavailableException(f"Request could not be executed - Request: {request} - Params: {params}")
         if res.status_code == 404:
-            raise ProviderUnavailableException("Service not found (status_code 404) - Request: %s - Params: %s" % (request, params))
+            raise ProviderUnavailableException(f"Service not found (status_code 404) - Request: {request} - Params: {params}")
         res.encoding = 'utf-8'
         result = res.json()
         d = {}
@@ -306,24 +303,24 @@ class HeritagedataProvider(VocabularyProvider):
             property = None
             if 'property' in r.keys():
                 property = r['property']
-            if not service == 'getConceptRelations' or property == str(SKOS.narrower):
+            if not service == 'getConceptRelations' or property == "skos:narrower":
                 item = {
-                'id': _split_uri(uri, 1),
-                'uri': uri,
-                'type': 'concept',
-                'label': label,
-                'lang': language
+                    'id': _split_uri(uri, 1),
+                    'uri': uri,
+                    'type': 'concept',
+                    'label': label,
+                    'lang': language
                 }
-            if uri not in d:
-                d[uri] = item
-            if tags.tag(d[uri]['lang']).format == tags.tag(self._get_language(**kwargs)).format:
-                pass
-            elif tags.tag(item['lang']).format == tags.tag(self._get_language(**kwargs)).format:
-                d[uri] = item
-            elif tags.tag(item['lang']).language and (tags.tag(item['lang']).language.format == tags.tag(self._get_language(**kwargs)).language.format):
-                d[uri] = item
-            elif tags.tag(item['lang']).format == 'en':
-                d[uri] = item
+                if uri not in d:
+                    d[uri] = item
+                if tags.tag(d[uri]['lang']).format == tags.tag(self._get_language(**kwargs)).format:
+                    pass
+                elif tags.tag(item['lang']).format == tags.tag(self._get_language(**kwargs)).format:
+                    d[uri] = item
+                elif tags.tag(item['lang']).language and (tags.tag(item['lang']).language.format == tags.tag(self._get_language(**kwargs)).language.format):
+                    d[uri] = item
+                elif tags.tag(item['lang']).format == 'en':
+                    d[uri] = item
         return list(d.values())
 
     def _sort(self, items, sort, language='en', reverse=False):

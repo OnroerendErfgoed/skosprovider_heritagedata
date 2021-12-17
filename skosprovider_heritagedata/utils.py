@@ -1,33 +1,23 @@
-# -*- coding: utf-8 -*-
 '''
 Utility functions for :mod:`skosprovider_heritagedata`.
 '''
 
-import requests
-from skosprovider.skos import (
-    Concept,
-    Label,
-    Note,
-    ConceptScheme)
-from skosprovider.exceptions import ProviderUnavailableException
-
 import logging
-import sys
-import requests
-
-log = logging.getLogger(__name__)
-
-PY3 = sys.version_info[0] == 3
-
-if PY3:  # pragma: no cover
-    binary_type = bytes
-else:  # pragma: no cover
-    binary_type = str
 
 import rdflib
+import requests
+from rdflib.namespace import DCTERMS
+from rdflib.namespace import RDF
+from rdflib.namespace import RDFS
+from rdflib.namespace import SKOS
 from rdflib.term import URIRef
-from rdflib.namespace import RDF, SKOS, DC, DCTERMS, RDFS
+from skosprovider.exceptions import ProviderUnavailableException
+from skosprovider.skos import Concept
+from skosprovider.skos import ConceptScheme
+from skosprovider.skos import Label
+from skosprovider.skos import Note
 
+log = logging.getLogger(__name__)
 PROV = rdflib.Namespace('http://www.w3.org/ns/prov#')
 
 def conceptscheme_from_uri(conceptscheme_uri, **kwargs):
@@ -70,13 +60,15 @@ def things_from_graph(graph, concept_scheme):
     :rtype: :class:`list`
     '''
     clist = []
+    valid_label_types = Label.valid_types[:]
+    valid_label_types.remove('sortLabel')
     for sub, pred, obj in graph.triples((None, RDF.type, SKOS.Concept)):
         uri = str(sub)
         con = Concept(
             id=_split_uri(uri, 1),
             uri=uri,
             concept_scheme = concept_scheme,
-            labels = _create_from_subject_typelist(graph, sub, Label.valid_types),
+            labels = _create_from_subject_typelist(graph, sub, valid_label_types),
             notes = _create_from_subject_typelist(graph, sub, Note.valid_types),
             broader = _create_from_subject_predicate(graph, sub, SKOS.broader),
             narrower = _create_from_subject_predicate(graph, sub, SKOS.narrower),
@@ -160,15 +152,16 @@ def uri_to_graph(uri, **kwargs):
     if res.status_code == 404:
         return False
     graph.parse(data=res.content)
-    #heritagedata.org returns a empy page/graph when a resource does not exists (statsu_code 200). For this reason we return False if the graph is empty
+    # heritagedata.org returns a empy page/graph when a resource does not exists
+    # (statsu_code 200). For this reason we return False if the graph is empty
     if len(graph) == 0:
         return False
     return graph
 
 
 def text_(s, encoding='latin-1', errors='strict'):
-    """ If ``s`` is an instance of ``binary_type``, return
+    """ If ``s`` is an instance of ``bytes``, return
     ``s.decode(encoding, errors)``, otherwise return ``s``"""
-    if isinstance(s, binary_type):
+    if isinstance(s, bytes):
         return s.decode(encoding, errors)
     return s

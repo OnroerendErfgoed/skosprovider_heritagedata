@@ -1,5 +1,4 @@
 #!/usr/bin/python
-# -*- coding: utf-8 -*-
 '''
 This script demonstrates using the HeritagedataProvider to expand a concept
 '''
