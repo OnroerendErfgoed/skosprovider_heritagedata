@@ -1,11 +1,11 @@
 #!/usr/bin/python
-# -*- coding: utf-8 -*-
 
-from skosprovider_heritagedata.providers import (
-    HeritagedataProvider
-)
-from skosprovider.exceptions import ProviderUnavailableException
 import unittest
+
+from skosprovider.exceptions import ProviderUnavailableException
+
+from skosprovider_heritagedata.providers import HeritagedataProvider
+
 
 class HeritagedataProviderTests(unittest.TestCase):
 
@@ -189,7 +189,7 @@ class HeritagedataProviderTests(unittest.TestCase):
 
     def test_find_collections(self):
         r = HeritagedataProvider({'id': 'Heritagedata'}, scheme_uri='http://purl.org/heritagedata/schemes/eh_period').find({'type': 'collection'})
-        self.assertEquals(r, [])
+        self.assertEqual(r, [])
 
     def test_find_wrong_type(self):
         self.assertRaises(ValueError, HeritagedataProvider({'id': 'Heritagedata'}, scheme_uri='http://purl.org/heritagedata/schemes/eh_period').find, {'type': 'collectie'})
