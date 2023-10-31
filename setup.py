@@ -13,14 +13,14 @@ packages = [
 ]
 
 requires = [
-    'skosprovider>=0.6.0',
+    'skosprovider>=1.1.0',
     'requests',
     'rdflib'
 ]
 
 setup(
     name='skosprovider_heritagedata',
-    version='1.1.0',
+    version='1.2.0',
     description='Skosprovider implementation of the heritagedata.org Vocabularies',
     long_description=README,
     packages=packages,
@@ -36,10 +36,10 @@ setup(
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
+        'Programming Language :: Python :: 3.11',
     ],
     author='Flanders Heritage Agency',
     author_email='ict@onroerenderfgoed.be',
     url='https://github.com/OnroerendErfgoed/skosprovider_heritagedata',
     keywords='heritagedata.org skos skosprovider thesauri vocabularies',
-    test_suite='nose.collector'
 )

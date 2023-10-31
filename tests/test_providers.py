@@ -9,6 +9,12 @@ from skosprovider_heritagedata.providers import HeritagedataProvider
 
 class HeritagedataProviderTests(unittest.TestCase):
 
+    def _get_provider(self):
+        return HeritagedataProvider(
+            {'id': 'Heritagedata'},
+            service_scheme_uri='http://heritagedata.org/live/services/'
+        )
+
     def test_set_custom_session(self):
         import requests
         sess = requests.Session()
@@ -18,6 +24,28 @@ class HeritagedataProviderTests(unittest.TestCase):
             session=sess
         )
         self.assertEqual(sess, provider.session)
+
+    def test_get_default_vocabulary_uri(self):
+        provider = self._get_provider()
+        assert 'http://purl.org/heritagedata/schemes/eh_period' == provider.get_vocabulary_uri()
+
+    def test_get_custom_vocabulary_uri(self):
+        provider = HeritagedataProvider(
+            {'id': 'ScAPA'},
+            service_scheme_uri='http://heritagedata.org/live/services/',
+            scheme_uri= 'http://purl.org/heritagedata/schemes/scapa'
+        )
+        assert 'http://purl.org/heritagedata/schemes/scapa' == provider.get_vocabulary_uri()
+
+    def test_get_vocabulary_uri_does_not_load_cs(self):
+        provider = HeritagedataProvider(
+            {'id': 'ScAPA'},
+            service_scheme_uri='http://heritagedata.org/live/services/',
+            scheme_uri= 'http://purl.org/heritagedata/schemes/scapa'
+        )
+        assert provider._conceptscheme is None
+        assert 'http://purl.org/heritagedata/schemes/scapa' == provider.get_vocabulary_uri()
+        assert provider._conceptscheme is None
 
     def test_default_provider(self):
         provider = HeritagedataProvider({'id': 'Heritagedata'},service_scheme_uri='http://heritagedata.org/live/services/')
