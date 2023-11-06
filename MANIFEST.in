@@ -1,1 +1,2 @@
 include README.md LICENSE HISTORY.rst
+include skosprovider_heritagedata/conceptschemes.json

@@ -4,21 +4,45 @@ Utility functions for :mod:`skosprovider_heritagedata`.
 
 import logging
 
-import rdflib
 import requests
+import json
+import os
+
+import rdflib
+from rdflib.term import URIRef
 from rdflib.namespace import DCTERMS
 from rdflib.namespace import RDF
 from rdflib.namespace import RDFS
 from rdflib.namespace import SKOS
-from rdflib.term import URIRef
+
 from skosprovider.exceptions import ProviderUnavailableException
 from skosprovider.skos import Concept
 from skosprovider.skos import ConceptScheme
 from skosprovider.skos import Label
 from skosprovider.skos import Note
+from skosprovider.skos import Source
 
 log = logging.getLogger(__name__)
-PROV = rdflib.Namespace('http://www.w3.org/ns/prov#')
+
+CONCEPTSCHEMES = {}
+
+f = open(os.path.join(os.path.dirname(__file__), './conceptschemes.json'))
+data = json.load(f)
+
+for csd in data:
+    cs = ConceptScheme(
+        csd['uri'],
+        labels=[
+            Label(csd['label'], 'prefLabel', csd['label lang'])
+        ],
+        notes=[
+            Note(csd['description'], 'scopeNote', csd['description lang'])
+        ],
+        sources=[
+            Source(csd['attribution'], None)
+        ]
+    )
+    CONCEPTSCHEMES[csd['uri']] = cs
 
 def conceptscheme_from_uri(conceptscheme_uri, **kwargs):
     '''
