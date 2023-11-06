@@ -34,8 +34,8 @@ class HeritagedataProvider(VocabularyProvider):
         :param kwargs: arguments defining the provider.
             * Typical argument is `scheme_uri`.
                 The `scheme_uri` is a composition of the `base_scheme_uri` and `scheme_id`
-            * The :class:`skosprovider_Heritagedata.providers.HeritagedataProvider`
-                is the default :class:`skosprovider_Heritagedata.providers.HeritagedataProvider`
+            * session: a custom requests Sesssion
+            * concept_scheme: the scheme all concepts belong to, avoids a call to the webservice
         """
         if not 'default_language' in metadata:
             metadata['default_language'] = 'en'

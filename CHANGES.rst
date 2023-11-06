@@ -2,6 +2,9 @@
 ------------------
 
 - This library now requires skosprovider 1.1.0 (#86)
+- All current (2023-11-06) conceptschemes defines by heritagedata.org are now included
+  as skosprovider_heritagedata.utils.CONCEPTSCHEMES. Reusing them avoids a call to the
+  webservice just to get the conceptscheme loaded (#88)
 - Add support for Python 3.11
 
 1.1.0 (2022-08-17)
