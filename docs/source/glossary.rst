@@ -23,11 +23,11 @@ Glossary
    URN
     A URN is a specific form of a :term:`URI`.
 
-   EH
-    `English Heritage <http://www.english-heritage.org.uk>`__.
+   HE
+    `Historic England <https://historicengland.org.uk/>`__.
 
-   RCAHMS
-    `The Royal Commission on the Ancient and Historical Monuments of Scotland <http://www.rcahms.gov.uk>`__.
+   HES
+    `Historic Environment Scotland <https://www.historicenvironment.scot/>`__.
 
    RCAHMW
-    `The Royal Commission on the Ancient and Historical Monuments of Wales <http://www.rcahmw.gov.uk>`__.
+    `The Royal Commission on the Ancient and Historical Monuments of Wales <http://rcahmw.gov.uk>`__.

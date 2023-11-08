@@ -34,8 +34,8 @@ class HeritagedataProvider(VocabularyProvider):
         :param kwargs: arguments defining the provider.
             * Typical argument is `scheme_uri`.
                 The `scheme_uri` is a composition of the `base_scheme_uri` and `scheme_id`
-            * The :class:`skosprovider_Heritagedata.providers.HeritagedataProvider`
-                is the default :class:`skosprovider_Heritagedata.providers.HeritagedataProvider`
+            * session: a custom requests Sesssion
+            * concept_scheme: the scheme all concepts belong to, avoids a call to the webservice
         """
         if not 'default_language' in metadata:
             metadata['default_language'] = 'en'
@@ -49,17 +49,26 @@ class HeritagedataProvider(VocabularyProvider):
             self.base_scheme_uri = 'http://purl.org/heritagedata/schemes'
             self.scheme_id = 'eh_period'
         self.scheme_uri = self.base_scheme_uri + "/" + self.scheme_id
+        if not 'uri' in self.metadata:
+            self.metadata['uri'] = self.scheme_uri
 
         if 'service_scheme_uri' in kwargs:
             self.service_scheme_uri = kwargs['service_scheme_uri'].strip('/')
         else:
             self.service_scheme_uri = "http://heritagedata.org/live/services"
         self.session = kwargs.get('session', requests.Session())
+        
+        if 'concept_scheme' in kwargs:
+            self._conceptscheme = kwargs.get('concept_scheme')
+        else:
+            self._conceptscheme = None
 
     @property
     def concept_scheme(self):
-        return self._get_concept_scheme()
-
+        if self._conceptscheme is None:
+            self._conceptscheme = self._get_concept_scheme()
+        return self._conceptscheme
+    
     def _get_concept_scheme(self):
         return conceptscheme_from_uri(
             self.scheme_uri,

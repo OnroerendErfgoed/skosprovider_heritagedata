@@ -1,0 +1,488 @@
+[
+    {
+        "uri": "http://purl.org/heritagedata/schemes/11",
+        "label": "PERIOD (WALES)",
+        "label lang": "en",
+        "description": "A list of periods for use in Wales.",
+        "description lang": "en",
+        "attribution": "RCAHMW",
+        "attribution lang": "en"
+    },
+    {
+        "uri": "http://purl.org/heritagedata/schemes/2",
+        "label": "Archaeological Objects Thesaurus (Scotland)",
+        "label lang": "en",
+        "description": "Objects made by human activity.",
+        "description lang": "en",
+        "attribution": "Historic Environment Scotland",
+        "attribution lang": "en"
+    },
+    {
+        "uri": "http://purl.org/heritagedata/schemes/3",
+        "label": "Maritime Craft Thesaurus (Scotland)",
+        "label lang": "en",
+        "description": "Types of craft that survive as wrecks, or are documented as losses, in Scottish maritime waters.",
+        "description lang": "en",
+        "attribution": "Historic Environment Scotland",
+        "attribution lang": "en"
+    },
+    {
+        "uri": "http://purl.org/heritagedata/schemes/1",
+        "label": "Monument Type Thesaurus (Scotland)",
+        "label lang": "en",
+        "description": "Monument types relating to the archaeological and built heritage of Scotland.",
+        "description lang": "en",
+        "attribution": "Historic Environment Scotland",
+        "attribution lang": "en"
+    },
+    {
+        "uri": "http://purl.org/heritagedata/schemes/mda_obj",
+        "label": "FISH Archaeological Objects Thesaurus",
+        "label lang": "en",
+        "description": "Originally developed by the Archaeological Objects Working Party and published by the mda. It provides guidance for the recording of archaeological objects in Britain and Ireland covering all historical periods. Now maintained by FISH on behalf of the heritage sector",
+        "description lang": "en",
+        "attribution": "Historic England",
+        "attribution lang": "en"
+    },
+    {
+        "uri": "http://purl.org/heritagedata/schemes/eh_period",
+        "label": "Historic England Periods",
+        "label lang": "en",
+        "description": "Periods used in Historic England datasets",
+        "description lang": "en",
+        "attribution": "Historic England",
+        "attribution lang": "en"
+    },
+    {
+        "uri": "http://purl.org/heritagedata/schemes/agl_et",
+        "label": "FISH Event Types Thesaurus",
+        "label lang": "en",
+        "description": "Terminology used for recording archaeological and architectural investigative, data collection exercises; from intrusive interventions to non damaging surveys",
+        "description lang": "en",
+        "attribution": "Historic England",
+        "attribution lang": "en"
+    },
+    {
+        "uri": "http://purl.org/heritagedata/schemes/eh_tmt2",
+        "label": "FISH Thesaurus of Monument Types",
+        "label lang": "en",
+        "description": "Terminology relating to the built and buried heritage of the British Isles and used for recording sites, monuments, buildings and structures.",
+        "description lang": "en",
+        "attribution": "Historic England",
+        "attribution lang": "en"
+    },
+    {
+        "uri": "http://purl.org/heritagedata/schemes/560",
+        "label": "FISH Archaeological Sciences Thesaurus",
+        "label lang": "en",
+        "description": "Terminology used for recording the techniques, recovery methods and materials associated with archaeological sciences. Maintained by Historic England on behalf of the FISH Terminology Working Group.",
+        "description lang": "en",
+        "attribution": "Historic England",
+        "attribution lang": "en"
+    },
+    {
+        "uri": "http://purl.org/heritagedata/schemes/eh_tbm",
+        "label": "FISH Building Materials Thesaurus",
+        "label lang": "en",
+        "description": "Terminology used for recording the main construction materials of monuments, buildings and structures relating to the built and buried heritage of the British Isles. Maintained by Historic England on behalf of the FISH Terminology Working Group",
+        "description lang": "en",
+        "attribution": "Historic England",
+        "attribution lang": "en"
+    },
+    {
+        "uri": "http://purl.org/heritagedata/schemes/12",
+        "label": "THREAT TYPE (WALES) (DRAFT)",
+        "label lang": "en",
+        "description": "A look-up list of threat types used by the HERs in Wales.",
+        "description lang": "en",
+        "attribution": "RCAHMW",
+        "attribution lang": "en"
+    },
+    {
+        "uri": "http://purl.org/heritagedata/schemes/17",
+        "label": "EVENT (WALES) (DRAFT)",
+        "label lang": "en",
+        "description": "Terms used for describing events in Wales.",
+        "description lang": "en",
+        "attribution": "RCAHMW",
+        "attribution lang": "en"
+    },
+    {
+        "uri": "http://purl.org/heritagedata/schemes/19",
+        "label": "EVIDENCE (WALES) (DRAFT)",
+        "label lang": "en",
+        "description": "The form of a monument as it was recorded.",
+        "description lang": "en",
+        "attribution": "RCAHMW",
+        "attribution lang": "en"
+    },
+    {
+        "uri": "http://purl.org/heritagedata/schemes/14",
+        "label": "MONUMENT IMPORTANCE CATEGORY (WALES) (DRAFT)",
+        "label lang": "en",
+        "description": "A list of category codes for use in establishing the relative importance or significance of monuments.",
+        "description lang": "en",
+        "attribution": "RCAHMW",
+        "attribution lang": "en"
+    },
+    {
+        "uri": "http://purl.org/heritagedata/schemes/15",
+        "label": "THREAT SIGNIFICANCE (WALES) (DRAFT)",
+        "label lang": "en",
+        "description": "The significance of a particular threat to affect the current condition or state of survival of a monument. A number of factors may be considered when assessing the significance of a threat, for example a threat may be active, extensive, high impact, concentrated, dormant, seasonal, occasional, long-term or short-term. This information should be recorded by parties undertaking risk assessment work or monitoring or recording work that relies on this information to create suitable management or conservation plans for the site.",
+        "description lang": "en",
+        "attribution": "RCAHMW",
+        "attribution lang": "en"
+    },
+    {
+        "uri": "http://purl.org/heritagedata/schemes/18",
+        "label": "CONDITION RATING (WALES) (DRAFT)",
+        "label lang": "en",
+        "description": "The current or last known condition rating assessment of a monument in relation to state of preservation, perceived damage decay or deterioration. This information should be recorded by all parties undertaking field survey, condition assessment or monitoring of a site or monument, each time a survey is carried out.",
+        "description lang": "en",
+        "attribution": "RCAHMW",
+        "attribution lang": "en"
+    },
+    {
+        "uri": "http://purl.org/heritagedata/schemes/21",
+        "label": "NGR PRECISION (WALES) (DRAFT)",
+        "label lang": "en",
+        "description": "The precision of the NGR, based on the scale.",
+        "description lang": "en",
+        "attribution": "RCAHMW",
+        "attribution lang": "en"
+    },
+    {
+        "uri": "http://purl.org/heritagedata/schemes/22",
+        "label": "NGR SOURCE DESCRIPTOR (WALES) (DRAFT)",
+        "label lang": "en",
+        "description": "A value that describes the source of the grid reference for a site.",
+        "description lang": "en",
+        "attribution": "RCAHMW",
+        "attribution lang": "en"
+    },
+    {
+        "uri": "http://purl.org/heritagedata/schemes/10",
+        "label": "MONUMENT TYPE (WALES)",
+        "label lang": "en",
+        "description": "A list of monument types for use in Wales.",
+        "description lang": "en",
+        "attribution": "RCAHMW",
+        "attribution lang": "en"
+    },
+    {
+        "uri": "http://purl.org/heritagedata/schemes/20",
+        "label": "NGR ACCURACY DESCRIPTION (WALES)",
+        "label lang": "en",
+        "description": "A description of the accuracy of the NGR",
+        "description lang": "en",
+        "attribution": "RCAHMW",
+        "attribution lang": "en"
+    },
+    {
+        "uri": "http://purl.org/heritagedata/schemes/13",
+        "label": "SURVIVAL CONDITION (WALES)",
+        "label lang": "en",
+        "description": "An overall snapshot assessment of the current or last known broad condition status of a monument in relation to the general survival of such monuments for the period they represent. Different parts of the monument may be better preserved than others and this should be used as a general overarching term considering percentage of survival, ease of monument identification as well as age of site.",
+        "description lang": "en",
+        "attribution": "RCAHMW",
+        "attribution lang": "en"
+    },
+    {
+        "uri": "http://purl.org/heritagedata/schemes/23",
+        "label": "CONDITION TREND (WALES)",
+        "label lang": "en",
+        "description": "Measured change in the condition of a site since the last assessment of Condition Rating. Can also be known as Stability. Please use in conjunction with the expanded guidance notes presented at the end of this document. This information should be recorded by all parties undertaking condition assessment or monitoring work, to compare the most recent assessment against the last known assessment. Effort should be made to find details of the last known Condition Rating from record holding organisations.",
+        "description lang": "en",
+        "attribution": "RCAHMW",
+        "attribution lang": "en"
+    },
+    {
+        "uri": "http://purl.org/heritagedata/schemes/24",
+        "label": "VULNERABILITY (WALES)",
+        "label lang": "en",
+        "description": "This measures how susceptible the monument is to damaging processes already at work or likely to occur. This should be an assessment, based on the vulnerability of the site to the identified threats and current condition rating. This information should be recorded by parties undertaking risk assessment work or monitoring or recording work that relies on this information to create suitable management or conservation plans for the site.",
+        "description lang": "en",
+        "attribution": "RCAHMW",
+        "attribution lang": "en"
+    },
+    {
+        "uri": "http://purl.org/heritagedata/schemes/25",
+        "label": "RISK LEVEL (WALES)",
+        "label lang": "en",
+        "description": "The Risk Level of a monument is determined according to the combination of the criteria assessed above (condition rating, identified threats, significance of threats and vulnerability of the monument). Risk level is recording the level of risk as a result of the combination of the significance of one or more threats and vulnerability of the monument to each threat type. This information should be recorded by parties undertaking risk assessment work or monitoring or recording work that relies on this information to create suitable management or conservation plans for the site.",
+        "description lang": "en",
+        "attribution": "RCAHMW",
+        "attribution lang": "en"
+    },
+    {
+        "uri": "http://purl.org/heritagedata/schemes/scapa",
+        "label": "ScAPA : Scottish Archaeological Periods & Ages",
+        "label lang": "en",
+        "description": "List of archaeological periods & ages for cultural heritage use in Scotland",
+        "description lang": "en",
+        "attribution": "Historic Environment Scotland",
+        "attribution lang": "en"
+    },
+    {
+        "uri": "http://purl.org/heritagedata/schemes/8196a6cc-77df-4439-8b04-f5d13472a064",
+        "label": "OASIS Funder",
+        "label lang": "en",
+        "description": "Funder",
+        "description lang": "en",
+        "attribution": "OASIS",
+        "attribution lang": "en"
+    },
+    {
+        "uri": "http://purl.org/heritagedata/schemes/2fedf061-855a-482c-9bc9-e7629bfc37ad",
+        "label": "OASIS Associated ID",
+        "label lang": "en",
+        "description": "Groups together IDs specific to the Historic Environment within Northern Ireland.",
+        "description lang": "en",
+        "attribution": "OASIS",
+        "attribution lang": "en"
+    },
+    {
+        "uri": "http://purl.org/heritagedata/schemes/61336484-8c4b-4bad-ac09-0c237b3f281b",
+        "label": "OASIS Development Type",
+        "label lang": "en",
+        "description": "Development type",
+        "description lang": "en",
+        "attribution": "OASIS",
+        "attribution lang": "en"
+    },
+    {
+        "uri": "http://purl.org/heritagedata/schemes/c31949b0-b6cf-4223-a2c0-c9a2048633ff",
+        "label": "OASIS Paper and Digital Archive Component",
+        "label lang": "en",
+        "description": "Paper and digital archive component",
+        "description lang": "en",
+        "attribution": "OASIS",
+        "attribution lang": "en"
+    },
+    {
+        "uri": "http://purl.org/heritagedata/schemes/ef5ebc5b-abd6-44c5-a9d6-83a16f2b66ae",
+        "label": "OASIS Protection Status",
+        "label lang": "en",
+        "description": "Protection status",
+        "description lang": "en",
+        "attribution": "OASIS",
+        "attribution lang": "en"
+    },
+    {
+        "uri": "http://purl.org/heritagedata/schemes/ee833bdc-4cf1-4fbf-9282-29e75655855d",
+        "label": "OASIS Reason for Investigation",
+        "label lang": "en",
+        "description": "Reason for investigation",
+        "description lang": "en",
+        "attribution": "OASIS",
+        "attribution lang": "en"
+    },
+    {
+        "uri": "http://purl.org/heritagedata/schemes/145",
+        "label": "FISH Maritime Place Names",
+        "label lang": "en",
+        "description": "Used for recording Maritime ports, countries and bodies of water from and to which vessels may have sailed or where they may have been registered.",
+        "description lang": "en",
+        "attribution": "Historic England",
+        "attribution lang": "en"
+    },
+    {
+        "uri": "http://purl.org/heritagedata/schemes/eh_tmc",
+        "label": "FISH Maritime Craft Types",
+        "label lang": "en",
+        "description": "Used for recording types of watercraft which survive as wrecks or museums in Historic England's maritime record.",
+        "description lang": "en",
+        "attribution": "Historic England",
+        "attribution lang": "en"
+    },
+    {
+        "uri": "http://purl.org/heritagedata/schemes/eh_evd",
+        "label": "FISH Evidence Thesaurus",
+        "label lang": "en",
+        "description": "Terminology covering the existing physical remains of a monument, or the means by which a monument has been identified where no physical remains exist",
+        "description lang": "en",
+        "attribution": "Historic England",
+        "attribution lang": "en"
+    },
+    {
+        "uri": "http://purl.org/heritagedata/schemes/77",
+        "label": "FISH Maritime Cargo Types Thesaurus",
+        "label lang": "en",
+        "description": "Used to record the type of cargo being carried by a vessel on its final voyage and often found in association with the wreck site.",
+        "description lang": "en",
+        "attribution": "Historic England",
+        "attribution lang": "en"
+    },
+    {
+        "uri": "http://purl.org/heritagedata/schemes/598",
+        "label": "FISH Maritime Ordnance Type Thesaurus",
+        "label lang": "en",
+        "description": "Used to record the ordnance and armament associated with a vessel and which may be useful, when found in association with a wreck site, in identifying a specific craft.",
+        "description lang": "en",
+        "attribution": "Historic England",
+        "attribution lang": "en"
+    },
+    {
+        "uri": "http://purl.org/heritagedata/schemes/572",
+        "label": "FISH Maritime Fixtures and Fittings Thesaurus",
+        "label lang": "en",
+        "description": "Used for recording fixtures and fittings associated with vessels found in a maritime context and often useful in identifying a specific craft.",
+        "description lang": "en",
+        "attribution": "Historic England",
+        "attribution lang": "en"
+    },
+    {
+        "uri": "http://purl.org/heritagedata/schemes/80",
+        "label": "FISH Maritime Nationality Thesaurus",
+        "label lang": "en",
+        "description": "Used to record the nationality, including flags of convenience, of a vessel or craft.",
+        "description lang": "en",
+        "attribution": "Historic England",
+        "attribution lang": "en"
+    },
+    {
+        "uri": "http://purl.org/heritagedata/schemes/73",
+        "label": "Historic England Maritime Object Material",
+        "label lang": "en",
+        "description": "Used for record the construction materials of maritime vessels and, where appropriate, their cargoes.",
+        "description lang": "en",
+        "attribution": "Historic England",
+        "attribution lang": "en"
+    },
+    {
+        "uri": "http://purl.org/heritagedata/schemes/465",
+        "label": "Historic England Archive Type Thesaurus",
+        "label lang": "en",
+        "description": "Used to record types of archive object associated with Monuments and Events.",
+        "description lang": "en",
+        "attribution": "Historic England",
+        "attribution lang": "en"
+    },
+    {
+        "uri": "http://purl.org/heritagedata/schemes/HE_threat",
+        "label": "Historic England Threat Type",
+        "label lang": "en",
+        "description": "Used to record known threats to the fabric or integrity of a site",
+        "description lang": "en",
+        "attribution": "Historic England",
+        "attribution lang": "en"
+    },
+    {
+        "uri": "http://purl.org/heritagedata/schemes/eh_com",
+        "label": "FISH Components Thesaurus",
+        "label lang": "en",
+        "description": "Used to record the constituent elements of a building or monument.",
+        "description lang": "en",
+        "attribution": "Historic England",
+        "attribution lang": "en"
+    },
+    {
+        "uri": "http://purl.org/heritagedata/schemes/78",
+        "label": "Manner of Loss",
+        "label lang": "en",
+        "description": "A small authority file/ wordlist for indexing types of loss of vessels or aircraft (e.g. beached, lost, enemy action).",
+        "description lang": "en",
+        "attribution": "Historic England",
+        "attribution lang": "en"
+    },
+    {
+        "uri": "http://purl.org/heritagedata/schemes/573",
+        "label": "Farmsteads Thesaurus",
+        "label lang": "en",
+        "description": "Thesaurus for indexing different types of farmsteads, related buildings, areas and layouts. This thesaurus does not contain any additional terminology than that held in Monument Type.",
+        "description lang": "en",
+        "attribution": "Historic England",
+        "attribution lang": "en"
+    },
+    {
+        "uri": "http://purl.org/heritagedata/schemes/571",
+        "label": "Historic Characterization Thesaurus",
+        "label lang": "en",
+        "description": "Thesaurus combining Historic Landscape and Historic Seascape Characterization terminology (e.g. reclaimed land, vineyard, dunes).",
+        "description lang": "en",
+        "attribution": "Historic England",
+        "attribution lang": "en"
+    },
+    {
+        "uri": "http://purl.org/heritagedata/schemes/596",
+        "label": "Heritage Crime Thesaurus",
+        "label lang": "en",
+        "description": "Thesaurus for indexing types of crime and incidents against heritage assets (e.g. graffiti, theft, unauthorized diving).",
+        "description lang": "en",
+        "attribution": "Historic England",
+        "attribution lang": "en"
+    },
+    {
+        "uri": "http://purl.org/heritagedata/schemes/365",
+        "label": "Defence Of Britain Thesaurus",
+        "label lang": "en",
+        "description": "Originally developed for the Defence of Britain Project. Types of defensive monuments relating to the 20th century in Great Britain and Northern Ireland. This thesaurus is no longer actively updated.",
+        "description lang": "en",
+        "attribution": "Historic England",
+        "attribution lang": "en"
+    },
+    {
+        "uri": "http://purl.org/heritagedata/schemes/225",
+        "label": "Historic Aircraft Types",
+        "label lang": "en",
+        "description": "Indexing terminology for the recording of aircraft remains and crash sites, listing aircraft types by form, function and manufacturer (e.g.Atlas, Target, Westland).",
+        "description lang": "en",
+        "attribution": "Historic England",
+        "attribution lang": "en"
+    },
+    {
+        "uri": "http://purl.org/heritagedata/schemes/599",
+        "label": "First World War Project",
+        "label lang": "en",
+        "description": "For the recording of monuments related to the First World War in the UK. This thesaurus was constructed for the First World War Home Front Project and does not contain any additional terminology than that held in Monument Type.",
+        "description lang": "en",
+        "attribution": "Historic England",
+        "attribution lang": "en"
+    },
+    {
+        "uri": "http://purl.org/heritagedata/schemes/547",
+        "label": "FISH Resource Description Thesaurus",
+        "label lang": "en",
+        "description": "Terminology for the description of archive type and format, now updated by FISH (e.g. excavation report, newspaper article, video clip). Originally developed by English Heritage and the National Trust.",
+        "description lang": "en",
+        "attribution": "Historic England",
+        "attribution lang": "en"
+    },
+    {
+        "uri": "http://purl.org/heritagedata/schemes/railways_thesaurus",
+        "label": "Railway Object Names Thesaurus",
+        "label lang": "en",
+        "description": "This thesaurus is primarily concerned with suggesting preferred terms for use in indexing railway objects and establishing relationships between them. Complexes comprising many objects such as stations, depots or even complete railway systems are included.",
+        "description lang": "en",
+        "attribution": "Collections Trust",
+        "attribution lang": "en"
+    },
+    {
+        "uri": "http://purl.org/heritagedata/schemes/595",
+        "label": "FISH Heritage Subjects and Themes",
+        "label lang": "en",
+        "description": "A thesaurus for describing subjects and themes associated with heritage assets.",
+        "description lang": "en",
+        "attribution": "Historic England",
+        "attribution lang": "en"
+    },
+    {
+        "uri": "http://purl.org/heritagedata/schemes/70",
+        "label": "Maritime Propulsion Type",
+        "label lang": "en",
+        "description": "Thesaurus of vessel propulsion terms (Maritime).",
+        "description lang": "en",
+        "attribution": "Historic England",
+        "attribution lang": "en"
+    },
+    {
+        "uri": "http://purl.org/heritagedata/schemes/72",
+        "label": "Maritime Construction Type",
+        "label lang": "en",
+        "description": "Thesaurus of hull construction terms (Maritime).",
+        "description lang": "en",
+        "attribution": "Historic England",
+        "attribution lang": "en"
+    }
+]

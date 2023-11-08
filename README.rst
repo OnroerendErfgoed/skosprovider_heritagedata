@@ -1,16 +1,27 @@
 skosprovider_heritagedata
 =========================
 
-A skosprovider for the services at `heritagedata.org <http://heritagedata.org>`_.
+.. image:: https://img.shields.io/pypi/v/skosprovider_heritagedata.svg
+        :target: https://pypi.python.org/pypi/skosprovider_heritagedata
+.. image:: https://app.travis-ci.com/OnroerendErfgoed/skosprovider_heritagedata.svg?branch=develop
+        :target: https://app.travis-ci.com/OnroerendErfgoed/skosprovider_heritagedata
+.. image:: https://coveralls.io/repos/github/OnroerendErfgoed/skosprovider_heritagedata/badge.svg?branch=develop
+        :target: https://coveralls.io/github/OnroerendErfgoed/skosprovider_heritagedata?branch=develop
 
-.. image:: https://travis-ci.org/OnroerendErfgoed/skosprovider_heritagedata.png?branch=master
-        :target: https://travis-ci.org/OnroerendErfgoed/skosprovider_heritagedata
-.. image:: https://coveralls.io/repos/OnroerendErfgoed/skosprovider_heritagedata/badge.png?branch=master
-        :target: https://coveralls.io/r/OnroerendErfgoed/skosprovider_heritagedata
-.. image:: https://readthedocs.org/projects/skosprovider-heritagedata/badge/?version=latest
-        :target: https://readthedocs.org/projects/skosprovider-heritagedata/?badge=latest
-.. image:: https://badge.fury.io/py/skosprovider_heritagedata.png
-        :target: http://badge.fury.io/py/skosprovider_heritagedata
+----
+
+.. image:: https://readthedocs.org/projects/skosprovider_heritagedata/badge/?version=latest
+        :target: http://skosprovider-heritagedata.readthedocs.io/en/latest/?badge=latest
+        :alt: Documentation Status
+.. image:: https://joss.theoj.org/papers/10.21105/joss.05040/status.svg
+        :target: https://doi.org/10.21105/joss.05040
+
+`Skosprovider <http://skosprovider.readthedocs.org>`_ implementation of the 
+`Heritagedata Vocabularies <http://heritagedata.org>`_ (Historic England,
+Historic Environment Scotland, Royal Commission on the Ancient and 
+Historical Monuments of Wales, ...), can be used in conjunction with the 
+`Atramhasis SKOS editor <https://github.com/OnroerendErfgoed/atramhasis>`_ to allow 
+linking your own vocabularies to the Heritagedata thesauri and importing from them.
 
 Building the docs
 -----------------
