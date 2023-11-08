@@ -3,6 +3,8 @@ skosprovider_heritagedata
 
 .. image:: https://img.shields.io/pypi/v/skosprovider_heritagedata.svg
         :target: https://pypi.python.org/pypi/skosprovider_heritagedata
+.. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.10086289.svg
+        :target: https://doi.org/10.5281/zenodo.10086289
 .. image:: https://app.travis-ci.com/OnroerendErfgoed/skosprovider_heritagedata.svg?branch=develop
         :target: https://app.travis-ci.com/OnroerendErfgoed/skosprovider_heritagedata
 .. image:: https://coveralls.io/repos/github/OnroerendErfgoed/skosprovider_heritagedata/badge.svg?branch=develop
