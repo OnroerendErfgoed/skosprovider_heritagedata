@@ -6,6 +6,7 @@
   as skosprovider_heritagedata.utils.CONCEPTSCHEMES. Reusing them avoids a call to the
   webservice just to get the conceptscheme loaded (#88)
 - Add support for Python 3.11 and drop support for 3.8
+- Updated some of the docs.
 
 1.1.0 (2022-08-17)
 ------------------
