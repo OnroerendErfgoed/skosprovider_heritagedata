@@ -5,9 +5,13 @@ Introduction
 
 This library offers an implementation of the 
 :class:`skosprovider.providers.VocabularyProvider` interface based on the 
-`Heritagedata Vocabularies <http://www.heritagedata.org>`_. These vocabularies
-are used by :term:`HE`, :term:`HES` and :term:`RCAHMW` in their role as
-curators of heritage.
+`Heritagedata Vocabularies <http://www.heritagedata.org>`_. Most of these
+vocabularies are used by UK heritage organisations such as 
+:term:`HE`, :term:`HES` and :term:`RCAHMW` in their role as curators of 
+heritage. Some vocabularies are specific to the :term:`OASIS` portal.
+
+More information on the thesauri and their creators can be found on the 
+`Heritagedata website <https://www.heritagedata.org/blog/>`_.
 
 Installation
 ------------

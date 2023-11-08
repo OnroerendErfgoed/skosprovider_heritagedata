@@ -31,3 +31,7 @@ Glossary
 
    RCAHMW
     `The Royal Commission on the Ancient and Historical Monuments of Wales <http://rcahmw.gov.uk>`__.
+
+   OASIS
+    `OASIS <https://oasis.ac.uk/>`_  is an online reporting form enabling archaeological and heritage practitioners to provide information about their investigations to regional Historic Environment Records (HERs) and respective national heritage organisations. 
+    As well as being an information-gathering tool, researchers may share reports with HERs for public release in the Archaeology Data Service (ADS) Library. The ADS, in addition to making the reports available online for access to the wider public, undertakes the curation and archiving of the digital files, ensuring long-term preservation.
