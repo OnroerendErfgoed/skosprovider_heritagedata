@@ -146,7 +146,9 @@ www.heritagedata.org/live/services/getSchemes?pretty
 Passing just the `scheme_uri` works, but whenever information on the conceptscheme 
 itself is requested, the provider needs to call the service. If you want to avoid 
 these calls, it's possible to get them from a dict of conceptschemes, indexed by 
-`scheme_uri`, that was added in version 1.2.0. 
+`scheme_uri`, that was added in version 1.2.0. This way of working is recommended
+for most uses, since the conceptscheme metadata rarely changes. Newer conceptschemes
+will be included when new versions of this library are released.
 
 
 .. code-block:: python
