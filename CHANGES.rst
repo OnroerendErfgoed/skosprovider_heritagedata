@@ -1,3 +1,8 @@
+1.2.1 (2023-11-08)
+------------------
+
+- Some documentation updates. No functional changes.
+
 1.2.0 (2023-11-08)
 ------------------
 

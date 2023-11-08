@@ -20,7 +20,7 @@ requires = [
 
 setup(
     name='skosprovider_heritagedata',
-    version='1.2.0',
+    version='1.2.1',
     description='Skosprovider implementation of the heritagedata.org Vocabularies',
     long_description=README,
     long_description_content_type='text/x-rst',
