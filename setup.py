@@ -23,6 +23,7 @@ setup(
     version='1.2.0',
     description='Skosprovider implementation of the heritagedata.org Vocabularies',
     long_description=README,
+    long_description_content_type='text/x-rst',
     packages=packages,
     include_package_data=True,
     install_requires=requires,
