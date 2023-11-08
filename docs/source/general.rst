@@ -6,17 +6,16 @@ Introduction
 This library offers an implementation of the 
 :class:`skosprovider.providers.VocabularyProvider` interface based on the 
 `Heritagedata Vocabularies <http://www.heritagedata.org>`_. These vocabularies
-are used by :term:`EH`, :term:`RCAHMS` and :term:`RCAHMW` in their role as
+are used by :term:`HE`, :term:`HES` and :term:`RCAHMW` in their role as
 curators of heritage.
 
 Installation
 ------------
 
 To be able to use this library you need to have a modern version of Python 
-installed. Currently we're supporting versions 2.7, 3.3 and 3.4 of Python.
+installed.
 
-This easiest way to install this library is through :command:`pip` or 
-:command:`easy install`:
+This easiest way to install this library is through :command:`pip`.
 
 .. code-block:: bash    
     
@@ -143,6 +142,26 @@ www.heritagedata.org/live/services/getSchemes?pretty
             "attribution": "RCAHMW"
         }
     ]
+
+Passing just the `scheme_uri` works, but whenever information on the conceptscheme 
+itself is requested, the provider needs to call the service. If you want to avoid 
+these calls, it's possible to get them from a dict of conceptschemes, indexed by 
+`scheme_uri`, that was added in version 1.2.0. 
+
+
+.. code-block:: python
+   
+   from skosprovider_heritagedata.providers import HeritagedataProvider
+   from skosprovider_heritagedata.utils import CONCEPTSCHEMES
+   
+   cs_uri = 'http://purl.org/heritagedata/schemes/eh_period'
+   
+   periodprovider = HeritagedataProvider(
+        {'id': 'eh_period'},
+        scheme_uri=cs_uri,
+        concept_scheme = CONCEPTSCHEMES[cs_uri]
+   )
+
 
 Using the providers
 ===================
