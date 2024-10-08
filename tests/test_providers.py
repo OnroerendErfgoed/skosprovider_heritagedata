@@ -62,7 +62,7 @@ class HeritagedataProviderTests(unittest.TestCase):
 
     def test_get_top_concepts_provider(self):
         provider = HeritagedataProvider({'id': 'Heritagedata'}, scheme_uri='http://purl.org/heritagedata/schemes/eh_period')
-        self.assertEqual(len(provider.get_top_concepts()), 8)
+        self.assertEqual(len(provider.get_top_concepts()), 2)
 
     def test_default_language_scottish_gaelic(self):
         provider_gd = HeritagedataProvider({'id': 'Heritagedata', 'default_language': 'gd'}, scheme_uri='http://purl.org/heritagedata/schemes/1')
@@ -93,7 +93,7 @@ class HeritagedataProviderTests(unittest.TestCase):
         self.assertEqual(concept['type'], 'concept')
         self.assertIsInstance(concept['labels'], list)
 
-        preflabels = [{'en': 'POST MEDIEVAL'}]
+        preflabels = [{'en': 'Post Medieval'}]
         preflabels_conc = [{label.language: label.label} for label in concept['labels']
                            if label.type == 'prefLabel']
         self.assertGreater(len(preflabels_conc), 0)
@@ -103,13 +103,17 @@ class HeritagedataProviderTests(unittest.TestCase):
         self.assertGreater(len(concept['notes']), 0)
         self.assertIsNotNone(concept['notes'][0])
         self.assertEqual(concept['notes'][0].language, 'en')
-        self.assertEqual(concept['notes'][0].note, 'Begins with the dissolution of the monasteries and'
-                                                   ' ends with the death of Queen Victoria. '
-                                                   'Use more specific period where known.')
+        self.assertEqual(
+            concept['notes'][0].note,
+            'Begins with the dissolution '
+            'of the monasteries (c.1540) and ends with the '
+            'death of Queen Victoria (1901). '
+            'Use more specific period where known.'
+        )
         self.assertEqual(concept['notes'][0].type, 'scopeNote')
 
         self.assertEqual(concept['id'], 'PM')
-        self.assertEqual(len(concept['broader']), 0)
+        self.assertEqual(len(concept['broader']), 1)
         self.assertEqual(len(concept['related']), 0)
         self.assertIn('STU', concept['narrower'])
 
@@ -135,7 +139,7 @@ class HeritagedataProviderTests(unittest.TestCase):
         keys_first_display = top_heritagedata_display[0].keys()
         for key in ['id', 'type', 'label', 'uri']:
             self.assertIn(key, keys_first_display)
-        self.assertIn('POST MEDIEVAL', [label['label'] for label in top_heritagedata_display])
+        self.assertIn('Centuries', [label['label'] for label in top_heritagedata_display])
 
     def test_get_top_display_sort_sort(self):
         prov = HeritagedataProvider(
@@ -163,10 +167,10 @@ class HeritagedataProviderTests(unittest.TestCase):
         sorted_by_id = prov.get_top_concepts(sort='id')
         assert [c['id'] for c in not_sorted] == [c['id'] for c in sorted_by_id]
         sorted_by_uri = prov.get_top_concepts(sort='uri')
-        assert len(sorted_by_id) == 8
+        assert len(sorted_by_id) == 2
         assert len(sorted_by_id) == len(sorted_by_uri)
         assert [c['id'] for c in sorted_by_id] == [c['id'] for c in sorted_by_uri]
-        sorted_by_label = prov.get_top_concepts(sort='label')
+        sorted_by_label = prov.get_top_concepts(sort='label', sort_order='desc')
         assert len(sorted_by_id) == len(sorted_by_label)
         assert [c['id'] for c in sorted_by_id] == [c['id'] for c in sorted_by_label]
 
@@ -178,7 +182,7 @@ class HeritagedataProviderTests(unittest.TestCase):
         keys_first_display = childeren_Heritagedata_pm[0].keys()
         for key in ['id', 'type', 'label', 'uri']:
             self.assertIn(key, keys_first_display)
-        self.assertIn("TUDOR", [label['label'] for label in childeren_Heritagedata_pm])
+        self.assertIn("Tudor", [label['label'] for label in childeren_Heritagedata_pm])
 
     def test_get_children_display_sort(self):
         prov = HeritagedataProvider(
@@ -272,7 +276,7 @@ class HeritagedataProviderTests(unittest.TestCase):
         provider = HeritagedataProvider({'id': 'Heritagedata'},service_scheme_uri='http://heritagedata.org/live/services/')
         res = provider._get_items("getConceptLabelMatch", {'contains': 'VICTORIAN', 'schemeURI': 'http://purl.org/heritagedata/schemes/eh_period'})
         self.assertEqual(len(res), 1)
-        self.assertEqual(res[0]['label'], 'VICTORIAN')
+        self.assertEqual(res[0]['label'], 'Victorian')
         self.assertEqual(res[0]['id'], 'VIC')
         self.assertEqual(res[0]['lang'], 'en')
         self.assertEqual(res[0]['type'], 'concept')
