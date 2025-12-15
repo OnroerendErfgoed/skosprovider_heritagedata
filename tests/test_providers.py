@@ -62,7 +62,7 @@ class HeritagedataProviderTests(unittest.TestCase):
 
     def test_get_top_concepts_provider(self):
         provider = HeritagedataProvider({'id': 'Heritagedata'}, scheme_uri='http://purl.org/heritagedata/schemes/eh_period')
-        self.assertEqual(len(provider.get_top_concepts()), 2)
+        self.assertEqual(len(provider.get_top_concepts()), 3)
 
     def test_default_language_scottish_gaelic(self):
         provider_gd = HeritagedataProvider({'id': 'Heritagedata', 'default_language': 'gd'}, scheme_uri='http://purl.org/heritagedata/schemes/1')
@@ -161,18 +161,24 @@ class HeritagedataProviderTests(unittest.TestCase):
     def test_get_top_concepts_sort(self):
         prov = HeritagedataProvider(
             {'id': 'Heritagedata'},
-            scheme_uri='http://purl.org/heritagedata/schemes/eh_period'
+            scheme_uri='http://purl.org/heritagedata/schemes/eh_period',
         )
-        not_sorted = prov.get_top_concepts()
+        concepts = prov.get_top_concepts()
         sorted_by_id = prov.get_top_concepts(sort='id')
-        assert [c['id'] for c in not_sorted] == [c['id'] for c in sorted_by_id]
+        assert len(sorted_by_id) == 3
+        # assert id sort is the default sort
+        assert [c['id'] for c in concepts] == [c['id'] for c in sorted_by_id]
+        assert sorted_by_id == list(sorted(concepts, key=lambda c: c['id']))
+
         sorted_by_uri = prov.get_top_concepts(sort='uri')
-        assert len(sorted_by_id) == 2
-        assert len(sorted_by_id) == len(sorted_by_uri)
-        assert [c['id'] for c in sorted_by_id] == [c['id'] for c in sorted_by_uri]
+        assert len(sorted_by_uri) == 3
+        assert sorted_by_uri == list(sorted(concepts, key=lambda c: c['uri']))
+
         sorted_by_label = prov.get_top_concepts(sort='label', sort_order='desc')
-        assert len(sorted_by_id) == len(sorted_by_label)
-        assert [c['id'] for c in sorted_by_id] == [c['id'] for c in sorted_by_label]
+        assert len(sorted_by_label) == 3
+        assert sorted_by_label == list(
+            sorted(concepts, key=lambda c: c['label'], reverse=True)
+        )
 
     def test_get_childeren_display(self):
         kwargs = {'language': 'nl'}
