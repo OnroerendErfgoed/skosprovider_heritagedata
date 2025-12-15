@@ -1,3 +1,10 @@
+1.3.0 (2025-12-15)
+------------------
+
+- Move to Github Actions + change build to pyrpoj.toml (#92)
+- Upgrade skosprovider dependency
+- Add workflow: Verify that the package can be built and is ready for upload to PyPI. (#95)
+
 1.2.1 (2023-11-08)
 ------------------
 
