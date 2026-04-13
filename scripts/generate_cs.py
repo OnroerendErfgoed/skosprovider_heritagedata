@@ -1,8 +1,7 @@
-'''
+"""
 A script to create a JSON file with all heritagedata.org conceptschemes
-'''
+"""
 
-import csv
 import json
 import requests
 
