@@ -7,8 +7,8 @@ from skosprovider_heritagedata.utils import text_
 from skosprovider_heritagedata.utils import uri_to_graph
 from skosprovider_heritagedata.utils import CONCEPTSCHEMES
 
-class UtilsTests():
 
+class UtilsTests:
     def test_text(self):
         res = text_(b'test123')
         assert 'test123' == res
@@ -28,14 +28,14 @@ class UtilsTests():
 
     def test_uri_to_graph_uri_not_available(self):
         with pytest.raises(ProviderUnavailableException):
-            g = uri_to_graph("http://does_not_exist.be/1.rdf")
+            uri_to_graph('http://does_not_exist.be/1.rdf')
 
     def test_uri_to_graph_no_resource(self):
         res = uri_to_graph('http://purl.org/heritagedata/schemes/no_resource.rdf')
         assert not res
 
-class ConceptSchemeTests():
 
+class ConceptSchemeTests:
     def test_conceptschemes_key_is_uri():
         for uri, cs in CONCEPTSCHEMES.items():
             assert uri == cs.uri
