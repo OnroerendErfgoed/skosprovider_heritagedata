@@ -1,12 +1,16 @@
 name: skosprovider_heritagedata backend tests
 on:
-  push:
+  pull_request:
     paths:
       - skosprovider_heritagedata/**
       - tests/**
       - skosprovider_heritagedata.yaml
       - pyproject.toml
       - requirements*.txt
+
+  push:
+    branches:
+      - main
 jobs:
   test:
     runs-on: ubuntu-latest
