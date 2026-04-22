@@ -4,7 +4,7 @@ on:
     paths:
       - skosprovider_heritagedata/**
       - tests/**
-      - skosprovider_heritagedata.yaml
+      - .github/workflows/skosprovider_heritagedata.yaml
       - pyproject.toml
       - requirements*.txt
 
